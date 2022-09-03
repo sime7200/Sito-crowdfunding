@@ -1,0 +1,56 @@
+.head-banner {
+    background-color: rgb(129, 126, 126);
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+    background-image: url(https://i0.wp.com/images.liveuniversity.it/sites/2/2017/08/landscape-1497428111-studiare-all-estero.jpg?fit=980%2C490&ssl=1);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-blend-mode: multiply;
+}
+
+
+.testo {
+	margin: 3rem;;
+	font-size: medium;
+	color: black;
+	text-align: center;
+}
+
+
+
+
+#titImp {
+	font-size: 42px;
+	font-weight: bold;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+#tabella{
+	padding-top: 2rem;
+}
+
+
+input:focus, button:focus {outline:0;}
+
+img {
+    vertical-align: middle;
+}
+
+
+.contenitore .contenuto{
+	max-width:1200px;
+	margin:auto;
+	padding: 70px 10px;
+	padding-bottom: 70px;
+}
+
+
+@media screen and (min-width:768px) {
+    .head-banner {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+    }
+    
+}
