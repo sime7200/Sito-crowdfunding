@@ -1,16 +1,17 @@
 var express = require("express");
 var app = express();
 const path = require("path");
-const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser"); //per leggere i cookie
 const session = require("express-session");
 const passport = require("passport");
-const SQLiteStore = require("connect-sqlite3")(session);
-const LocalStrategy = require("passport-local");
+const SQLiteStore = require("connect-sqlite3")(session); //per salvare nel db la sessione
+const LocalStrategy = require("passport-local"); //ci sono vari passport, qui e' per salvare i dati nel db
 const db = require("./db");
 const crypto = require("crypto");
-const projectRoute = require("./routes/project"); //si riferisce a project.js
+const projectRoute = require("./routes/project"); //si riferisce a project.js per chiamare tutte le rotte
+const userRoute = require("./routes/user"); //si riferisce a project.js per chiamare tutte le rotte
 
-// set the view engine to ejs
+// per fare andare ejs
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -28,6 +29,7 @@ app.use(
 );
 
 app.use("/", projectRoute);
+app.use("/", userRoute);
 
 app.use(passport.authenticate("session"));
 
@@ -81,11 +83,6 @@ passport.deserializeUser(function (user, cb) {
   });
 });
 
-app.use(function (req, res, next) {
-  console.log(req.session.message);
-  next();
-});
-
 app.post(
   "/login/password",
   passport.authenticate("local", {
@@ -94,11 +91,6 @@ app.post(
     failureMessage: true,
   })
 );
-// This is the basic express session({..}) initialization.app.use(passport.initialize())
-// init passport on every route call.app.use(passport.session())
-// allow passport to use "express-session".
-
-// use res.render to load up an ejs view file
 
 // index page
 app.get("/", function (req, res) {
@@ -107,12 +99,30 @@ app.get("/", function (req, res) {
 
 // about page
 app.get("/login", function (req, res) {
-  res.render("login");
+  res.render("login"); //non specifico l'estensione
 });
 
-app.get("/pippo", function (req, res) {
+//mission page
+app.get("/mission", function (req, res) {
+  res.render("mission");
+});
+
+//contatti page
+app.get("/contatti", function (req, res) {
+  res.render("contatti");
+});
+
+//pagina dettaglio progetto
+app.get("/dettaglioProgetto", function (req, res) {
   res.render("dettaglioProg");
 });
 
-app.listen(8080);
-console.log("Server is listening on port 8080");
+app.use(passport.session());
+//api logout
+app.get("/logout", function (req, res) {
+  req.logout();
+  res.render("index");
+});
+
+app.listen(3000);
+console.log("Server is listening on port 3000");

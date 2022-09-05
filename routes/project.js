@@ -13,6 +13,7 @@ function fetchProjects(req, res, next) {
   );
 }
 
+//creo progetto
 router.post("/createProject", function (req, res, next) {
   db.run(
     "INSERT INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
@@ -33,6 +34,7 @@ router.post("/createProject", function (req, res, next) {
   );
 });
 
+//ottengo tutti i progetti nel db di quell'utente loggato
 router.get(
   "/",
   function (req, res, next) {

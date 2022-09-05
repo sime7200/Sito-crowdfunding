@@ -4,7 +4,7 @@ var crypto = require("crypto");
 var db = new sqlite3.Database("./var/db/projects.db");
 
 db.serialize(function () {
-  // create the database schema for the todos app
+  // create the database schema
   db.run(
     "CREATE TABLE IF NOT EXISTS users ( \
     id INTEGER PRIMARY KEY, \
