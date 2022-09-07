@@ -4,16 +4,6 @@ const router = express.Router();
 const crypto = require("crypto");
 
 //per ottenere gli utenti loggati
-function fetchUsers(req, res, next) {
-  db.all(
-    "SELECT * FROM users WHERE id=?",
-    [req.session.passport.user.id],
-    function (err, items) {
-      res.locals.users = items; //projects è il nome di una variabile che ho appena creato
-      next();
-    }
-  );
-}
 
 //per fare logout di un utente
 router.post("/logout", function (req, res, next) {
@@ -48,17 +38,17 @@ router.post("/signup", function (req, res, next) {
           var user = {
             id: this.lastID,
             username: req.body.username,
+            role: req.body.role,
           };
-          //req.login(user, function (err) {
-          //if (err) {
-          //return next(err);
-          //}
-          res.redirect("/");
-          //});
+
+          res.locals.successSignup = true;
+          res.status(200).render("login", { successSignup: true });
         }
       );
     }
   );
 });
+
+router;
 
 module.exports = router;

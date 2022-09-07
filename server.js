@@ -28,9 +28,6 @@ app.use(
   })
 );
 
-app.use("/", projectRoute);
-app.use("/", userRoute);
-
 app.use(passport.authenticate("session"));
 
 passport.use(
@@ -92,9 +89,14 @@ app.post(
   })
 );
 
+app.use("/", projectRoute);
+app.use("/", userRoute);
+
 // index page
-app.get("/", function (req, res) {
-  res.render("index");
+app.get("/", function (req, res, next) {
+  //se l'utente non è loggato
+
+  return res.render("index", { user: req.user });
 });
 
 // about page
@@ -110,6 +112,10 @@ app.get("/mission", function (req, res) {
 //contatti page
 app.get("/contatti", function (req, res) {
   res.render("contatti");
+});
+
+app.get("/creatore", function (req, res) {
+  res.render("pagCreatore");
 });
 
 //pagina dettaglio progetto

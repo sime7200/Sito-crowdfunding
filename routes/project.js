@@ -2,15 +2,20 @@ const db = require("../db");
 const express = require("express");
 const router = express.Router();
 
+/*
 function fetchProjects(req, res, next) {
-  db.all(
-    "SELECT * FROM projects WHERE owner_id=?",
-    [req.session.passport.user.id],
-    function (err, items) {
-      res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
-      next();
-    }
-  );
+  db.all("SELECT * FROM projects", function (err, items) {
+    res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
+    next();
+  });
+}
+*/
+
+function fetchProjects(req, res, next) {
+  db.all("SELECT * FROM projects", function (err, items) {
+    res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
+    next();
+  });
 }
 
 //creo progetto
@@ -35,8 +40,11 @@ router.post("/createProject", function (req, res, next) {
 });
 
 //ottengo tutti i progetti nel db di quell'utente loggato
+router.get("/", fetchProjects);
+
 router.get(
-  "/",
+  "/creatore",
+  /*
   function (req, res, next) {
     //se l'utente non è loggato
     if (!req.session.passport.user) {
@@ -44,6 +52,8 @@ router.get(
     }
     next();
   },
+  */
   fetchProjects
 );
+
 module.exports = router;

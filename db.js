@@ -17,8 +17,8 @@ db.serialize(function () {
 
   db.run(
     "CREATE TABLE IF NOT EXISTS projects ( \
-    id INTEGER PRIMARY KEY, \
     owner_id INTEGER NOT NULL, \
+    id INTEGER PRIMARY KEY, \
     title TEXT NOT NULL, \
     description TEXT NOT NULL, \
     category TEXT NOT NULL, \
@@ -32,22 +32,32 @@ db.serialize(function () {
   db.run(
     "CREATE TABLE IF NOT EXISTS documents ( \
     id INTEGER PRIMARY KEY, \
-    owner_id INTEGER NOT NULL, \
+    author TEXT NOT NULL, \
     title TEXT NOT NULL, \
     description TEXT NOT NULL, \
     date DATE NOT NULL, \
-    type TEXT NOT null \
+    type TEXT NOT NULL, \
+    file BLOB \
   )"
   );
 
   // create an initial user (username: alice, password: letmein)
   var salt = crypto.randomBytes(16);
   db.run(
-    "INSERT OR IGNORE INTO users (username,role,  hashed_password, salt) VALUES (?, ?, ?, ?)",
+    "INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)",
     [
       "alice",
-      "creatore",
+      "Creatore",
       crypto.pbkdf2Sync("letmein", salt, 310000, 32, "sha256"),
+      salt,
+    ]
+  );
+  db.run(
+    "INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)",
+    [
+      "luca",
+      "Creatore",
+      crypto.pbkdf2Sync("ciao", salt, 310000, 32, "sha256"),
       salt,
     ]
   );

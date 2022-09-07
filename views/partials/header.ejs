@@ -18,7 +18,10 @@
         width="110"
         height="90"
       />
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="nav-links">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="nav-links">
+        <li>
+          <a href="/index">Home</a>
+        </li>
         <li>
           <a href="/mission">Mission</a>
         </li>
@@ -26,10 +29,17 @@
           <a href="/contatti">Contatti</a>
         </li>
       </ul>
+      <% if(!user){ %>
+      <form action="/login" method="get">
+        <button class="login" type="submit">LOGIN</button>
+      </form>
+
+      <% } %> <% if(user && user.id ){ %>
       <form action="/logout" method="post">
         <button class="logout" type="submit">LOGOUT</button>
-        <input type="hidden" name="btn-logout"
       </form>
+      <% } %>
+
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"

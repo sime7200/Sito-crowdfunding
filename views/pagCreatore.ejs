@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home</title>
+    <title>Creatore</title>
     <%- include('partials/head');%>
   </head>
 
@@ -9,48 +9,6 @@
     <!--Inizio navbar-->
     <%- include('partials/header');%>
     <!--Fine navbar-->
-
-    <!--Sfondo-->
-    <!--btn btn-success-->
-    <header class="head-banner text-white">
-      <div class="container">
-        <div class="row">
-          <div class="col mx-auto text-center">
-            <h1 class="font-weight-bold">A plan, together</h1>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col mx-auto text-center">
-            <button
-              onclick="location.href='/login'"
-              id="bSfondo"
-              type="button"
-              class="btn btn-success btn-lg"
-            >
-              Get started
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="container text-center mx-auto testo">
-      <p>
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui
-        blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
-        et quas molestias excepturi sint occaecati cupiditate non provident,
-        similique sunt in culpa qui officia deserunt mollitia animi, id est
-        laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita
-        distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
-        cumque nihil impedit quo minus id quod maxime placeat facere possimus,
-        omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem
-        quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet
-        ut et voluptates repudiandae sint et molestiae non recusandae. Itaque
-        earum rerum hic tenetur a sapiente delectus, ut aut reiciendis
-        voluptatibus maiores alias consequatur aut perferendis doloribus
-        asperiores repellat.
-      </p>
-    </div>
 
     <div class="container">
       <div class="row">
@@ -64,10 +22,9 @@
               Aggiungi progetto
             </button>
           </div>
-          <table id="project-table" class="table">
+          <table class="table">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Titolo</th>
                 <th scope="col">Descrizione</th>
                 <th scope="col">Categoria</th>
@@ -77,7 +34,6 @@
             <tbody>
               <% projects.forEach(element => { %>
               <tr>
-                <td><%=element.id%></td>
                 <td><%=element.title%></td>
                 <td><%=element.description%></td>
                 <td><%=element.category%></td>
@@ -171,6 +127,5 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
-    <script type="text/javascript" src="/javascript/index.js"></script>
   </body>
 </html>
