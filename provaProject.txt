@@ -2,26 +2,9 @@ const db = require("../db");
 const express = require("express");
 const router = express.Router();
 
-/*
 function fetchProjects(req, res, next) {
   db.all("SELECT * FROM projects", function (err, items) {
     res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
-    next();
-  });
-}
-*/
-
-function fetchProjects(req, res, next) {
-  db.all("SELECT * FROM projects", function (err, items) {
-    res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
-    next();
-  });
-}
-
-//per selezionare un progetto con quel id
-function fetchProjectsById(req, res, next) {
-  db.all("SELECT * FROM projects WHERE id=?", function (err, items) {
-    [req.id], (res.locals.progetto = items); //projects è il nome di una variabile che ho appena creato
     next();
   });
 }
@@ -50,6 +33,37 @@ router.post("/createProject", function (req, res, next) {
 //ottengo tutti i progetti nel db di quell'utente loggato
 router.get("/", fetchProjects);
 
+router.put("/modifica", function (req, res, next) {
+  db.run(
+    "REPLACE INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
+    [
+      req.session.passport.user.id,
+      req.body.title,
+      req.body.description,
+      req.body.category,
+      req.body.image,
+      req.body.author_name,
+    ],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.status(200).redirect("/creatore" + (req.body.filter || ""));
+    }
+  );
+});
+/*
+function fetchProjectsUser(req, res, next) {
+  db.all(
+    "SELECT * FROM projects WHERE author_name=?",
+    [req.session.passport.user.username],
+    function (err, items) {
+      res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
+      next();
+    }
+  );
+}
+*/
 router.get(
   "/creatore",
   /*
@@ -61,9 +75,8 @@ router.get(
     next();
   },
   */
-  fetchProjects
+  fetchProjects()
 );
 
-router.get("/project-details", fetchProjectsById);
-
 module.exports = router;
+

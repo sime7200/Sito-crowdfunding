@@ -3,8 +3,6 @@ const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
 
-//per ottenere gli utenti loggati
-
 //per fare logout di un utente
 router.post("/logout", function (req, res, next) {
   req.logout(function (err) {

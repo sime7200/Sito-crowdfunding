@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- include('partials/head');%>
+    <title>Project Details</title>
+    <%- include('partials/head.ejs');%>
   </head>
 
   <body>
-    <p>ciaooooooooooooooooooooo detty</p>
+    <!--Inizio navbar-->
+    <%- include('partials/header');%>
+
+    <div class="container small-container">
+      <div class="row row-dettaglio">
+        <div class="col-4">
+          <img
+            src="https://www.chimerarevo.com/wp-content/uploads/2020/04/immagini-gratis.jpg"
+            alt=""
+          />
+        </div>
+        <div class="col-8">
+          <h1>Titolo progetto</h1>
+          <p>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel nisi
+            corporis quisquam fugiat accusantium. Accusamus non eius facere
+            natus quas? Obcaecati iste facere repudiandae velit ipsum optio
+            eveniet natus veritatis!
+          </p>
+          <p><%-RISSSSSSSSSSS=progetto.title%></p>
+        </div>
+        <form action="/modifica" method="put">
+          <button class="modifica" type="button">Modifica progetto</button>
+        </form>
+      </div>
+    </div>
 
     <%- include('partials/footer.ejs');%>
 

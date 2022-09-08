@@ -29,7 +29,7 @@
           <a href="/contatti">Contatti</a>
         </li>
       </ul>
-      <% if(!user){ %>
+      <% if(!(user)){ %>
       <form action="/login" method="get">
         <button class="login" type="submit">LOGIN</button>
       </form>

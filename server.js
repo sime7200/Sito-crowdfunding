@@ -95,7 +95,6 @@ app.use("/", userRoute);
 // index page
 app.get("/", function (req, res, next) {
   //se l'utente non è loggato
-
   return res.render("index", { user: req.user });
 });
 
@@ -106,21 +105,21 @@ app.get("/login", function (req, res) {
 
 //mission page
 app.get("/mission", function (req, res) {
-  res.render("mission");
+  res.render("mission", { user: req.user });
 });
 
 //contatti page
 app.get("/contatti", function (req, res) {
-  res.render("contatti");
+  res.render("contatti", { user: req.user });
 });
 
 app.get("/creatore", function (req, res) {
-  res.render("pagCreatore");
+  res.render("pagCreatore", { user: req.user });
 });
 
 //pagina dettaglio progetto
-app.get("/dettaglioProgetto", function (req, res) {
-  res.render("dettaglioProg");
+app.get("/project-details", function (req, res) {
+  res.render("dettaglioProg", { user: req.user });
 });
 
 app.use(passport.session());

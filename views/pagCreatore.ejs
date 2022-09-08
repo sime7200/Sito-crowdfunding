@@ -22,18 +22,20 @@
               Aggiungi progetto
             </button>
           </div>
-          <table class="table">
+          <table id="project-table" class="table">
             <thead class="thead-dark">
               <tr>
+                <th scope="col">Id</th>
                 <th scope="col">Titolo</th>
                 <th scope="col">Descrizione</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Autore</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="click-prog">
               <% projects.forEach(element => { %>
               <tr>
+                <td><%=element.id%></td>
                 <td><%=element.title%></td>
                 <td><%=element.description%></td>
                 <td><%=element.category%></td>
