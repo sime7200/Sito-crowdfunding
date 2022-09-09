@@ -20,8 +20,10 @@ function fetchProjects(req, res, next) {
 
 //per selezionare un progetto con quel id
 function fetchProjectsById(req, res, next) {
-  db.all("SELECT * FROM projects WHERE id=?", function (err, items) {
-    [req.id], (res.locals.progetto = items); //projects è il nome di una variabile che ho appena creato
+  const id = req.params.id;
+
+  db.all("SELECT * FROM projects WHERE id=?", [id], function (err, project) {
+    res.locals.project = project[0];
     next();
   });
 }
@@ -64,6 +66,15 @@ router.get(
   fetchProjects
 );
 
-router.get("/project-details", fetchProjectsById);
+router.get(
+  "/project-details/:id",
+  fetchProjectsById,
+  function (req, res, next) {
+    res.render("dettaglioProg", {
+      user: res.user,
+    });
+    next();
+  }
+);
 
 module.exports = router;

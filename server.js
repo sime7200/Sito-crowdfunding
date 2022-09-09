@@ -118,9 +118,9 @@ app.get("/creatore", function (req, res) {
 });
 
 //pagina dettaglio progetto
-app.get("/project-details", function (req, res) {
-  res.render("dettaglioProg", { user: req.user });
-});
+// app.get("/project-details", function (req, res) {
+//   res.render("dettaglioProg", { user: req.user });
+// });
 
 app.use(passport.session());
 //api logout
@@ -129,5 +129,5 @@ app.get("/logout", function (req, res) {
   res.render("index");
 });
 
-app.listen(3000);
+app.listen(3002);
 console.log("Server is listening on port 3000");

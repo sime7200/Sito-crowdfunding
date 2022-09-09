@@ -9,7 +9,8 @@ function addRowHandlers() {
       return function () {
         let cell = row.getElementsByTagName("td")[0];
         let id = cell.innerHTML;
-        location.pathname = "/project-details";
+
+        window.location.pathname = `/project-details/${id}`;
       };
     };
     currentRow.onclick = createClickHandler(currentRow);
