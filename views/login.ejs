@@ -4,14 +4,15 @@
     <title>Login</title>
     <%- include('partials/head');%>
   </head>
-  <body>
-    <section class="prompt">
+  <body id="page-login">
+    <section class="login-container">
       <h1>Sign in</h1>
 
       <form action="/login/password" method="post">
-        <section>
+        <div class="form-group">
           <label for="username">Username</label>
           <input
+            class="form-control"
             id="username"
             name="username"
             type="text"
@@ -19,24 +20,30 @@
             required
             autofocus
           />
-        </section>
-        <section>
-          <label for="password">Password</label>
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="password">Password</label>
           <input
+            class="form-control"
             id="password"
             name="password"
             type="password"
             autocomplete="current-password"
             required
           />
-        </section>
-        <button type="submit">Login</button>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Login</button>
+        <button
+          class="btn btn-link"
+          data-toggle="modal"
+          data-target="#new-user"
+        >
+          Registrati
+        </button>
       </form>
     </section>
-
-    <button class="btn" data-toggle="modal" data-target="#new-user">
-      Registrati
-    </button>
 
     <% if(locals && locals.successSignup){ %>
     <p>Utente aggiunto con successo!</p>

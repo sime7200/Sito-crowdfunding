@@ -31,24 +31,14 @@
       </ul>
       <% if(!(user)){ %>
       <form action="/login" method="get">
-        <button class="login" type="submit">LOGIN</button>
+        <button class="login btn btn-primary" type="submit">LOGIN</button>
       </form>
 
       <% } %> <% if(user && user.id ){ %>
       <form action="/logout" method="post">
-        <button class="logout" type="submit">LOGOUT</button>
+        <button class="logout btn btn-primary" type="submit">LOGOUT</button>
       </form>
       <% } %>
-
-      <form class="d-flex" role="search">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
     </div>
   </div>
 </nav>

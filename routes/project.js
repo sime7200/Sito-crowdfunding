@@ -14,6 +14,7 @@ function fetchProjects(req, res, next) {
 function fetchProjects(req, res, next) {
   db.all("SELECT * FROM projects", function (err, items) {
     res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
+    res.locals.searchValue = "";
     next();
   });
 }
@@ -76,5 +77,15 @@ router.get(
     next();
   }
 );
+
+router.post("/search", fetchProjects, function (req, res, next) {
+  const searchValue = req.body.searchValue;
+
+  res.locals.projects = res.locals.projects.filter(function (project) {
+    return project.title.includes(searchValue);
+  });
+
+  res.json(res.locals.projects);
+});
 
 module.exports = router;

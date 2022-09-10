@@ -1,0 +1,17 @@
+.login-container {
+  margin: 200px auto 0;
+  max-width: 500px;
+  background-color: white;
+  box-shadow: -1px 2px 15px 1px rgba(0, 0, 0, 0.45);
+  padding: 50px;
+}
+.login-container .label {
+  margin: 0;
+  text-align: left;
+}
+.login-container input {
+  width: 100%;
+}
+#page-login {
+  background-color: #f1f1f1;
+}
