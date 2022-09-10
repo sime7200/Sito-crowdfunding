@@ -36,8 +36,15 @@ db.serialize(function () {
     title TEXT NOT NULL, \
     description TEXT NOT NULL, \
     date DATE NOT NULL, \
-    type TEXT NOT NULL, \
-    file BLOB \
+    type NUMERIC NOT NULL, \
+    project_id INTEGER NOT NULL\
+  )"
+  );
+
+  db.run(
+    "CREATE TABLE IF NOT EXISTS follow ( \
+    user INTEGER NOT NULL,  \
+    id_prog INTEGER NOT NULL\
   )"
   );
 
@@ -52,6 +59,7 @@ db.serialize(function () {
       salt,
     ]
   );
+  // create an user (username: luca, password: ciao)
   db.run(
     "INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)",
     [
