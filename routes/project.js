@@ -88,7 +88,6 @@ router.post("/search", fetchProjects, function (req, res, next) {
   res.json(res.locals.projects);
 });
 
-//funzione per salvare i progetti preferiti
 router.post("/saveProject", function (req, res, next) {
   const id_project = req.params.id;
   db.run(

@@ -27,39 +27,38 @@ async function searchProject() {
   const projectCheckbox = document.getElementsByName("progetto-checkbox")[0];
   const documentCheckbox = document.getElementsByName("documento-checkbox")[0];
 
-  if (projectCheckbox.checked)
-    try {
-      let response = await fetch("/search", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          searchValue: value,
-          checkInProjet: projectCheckbox.checked,
-          checkInDocument: documentCheckbox.checked,
-        }),
-      });
-      let data = await response.json();
+  try {
+    let response = await fetch("/search", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        searchValue: value,
+        checkInProjet: projectCheckbox.checked,
+        checkInDocument: documentCheckbox.checked,
+      }),
+    });
+    let data = await response.json();
 
-      let tableBody = document.getElementById("table-project-body");
+    let tableBody = document.getElementById("table-project-body");
 
-      const rows = data
-        .map((project) => {
-          return `<tr>
+    const rows = data
+      .map((project) => {
+        return `<tr>
             <td>${project.id}</td>
             <td>${project.title}</td>
             <td>${project.description}</td>
             <td>${project.category}</td>
             <td>${project.author_name}</td>
           </tr>`;
-        })
-        .join("");
+      })
+      .join("");
 
-      tableBody.innerHTML = rows;
-      addOnClickRow();
-    } catch (error) {
-      console.log(error);
-    }
+    tableBody.innerHTML = rows;
+    addOnClickRow();
+  } catch (error) {
+    console.log(error);
+  }
 }
