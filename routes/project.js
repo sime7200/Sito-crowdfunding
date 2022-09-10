@@ -88,4 +88,21 @@ router.post("/search", fetchProjects, function (req, res, next) {
   res.json(res.locals.projects);
 });
 
+//funzione per salvare i progetti preferiti
+router.post("/saveProject", function (req, res, next) {
+  const id_project = req.params.id;
+  db.run(
+    "INSERT INTO follow (user,id_prog) VALUES (?,?)",
+    [req.session.passport.user.id, id_project],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res
+        .status(200)
+        .redirect("/project-details/:id" + (req.body.filter || ""));
+    }
+  );
+});
+
 module.exports = router;

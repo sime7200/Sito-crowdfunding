@@ -117,11 +117,6 @@ app.get("/creatore", function (req, res) {
   res.render("pagCreatore", { user: req.user });
 });
 
-//pagina dettaglio progetto
-// app.get("/project-details", function (req, res) {
-//   res.render("dettaglioProg", { user: req.user });
-// });
-
 app.use(passport.session());
 //api logout
 app.get("/logout", function (req, res) {
@@ -130,4 +125,4 @@ app.get("/logout", function (req, res) {
 });
 
 app.listen(3002);
-console.log("Server is listening on port 3000");
+console.log("Server is listening on port 3002");
