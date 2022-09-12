@@ -13,9 +13,11 @@
         <div class="col-4"><img /><%=project.image%></div>
         <div class="col-6">
           <h1 id="firstL"><%= project.title%></h1>
+          
+          <h5 id="id" name="id" for="id" >Id progetto: <%= project.id%></h5>
           <p id="firstL"><%= project.description%></p>
           <h5 id="firstL" class="text-right"><%= project.author_name%></h5>
-
+ 
           <div class="container">
             <div class="btn-modal">
               <button
@@ -116,7 +118,7 @@
           Salva progetto
         </button>
       </form>
-      <form action="/delete" method="DELETE">
+      <form action="/deleteProject" method="POST">
         <button class="btn btn-success" type="submit">
           Elimina progetto
         </button>

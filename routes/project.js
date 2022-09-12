@@ -166,17 +166,15 @@ router.post("/saveProject", function (req, res, next) {
 });
 
 //elimina progetto
-router.post("/delete/:id", function (req, res, next) {
-  db.run(
-    "DELETE FROM projects WHERE id = ? AND owner_id = ?",
-    [req.params.id, req.user.id],
-    function (err) {
-      if (err) {
-        return next(err);
-      }
-      return res.redirect("/" + (req.body.filter || ""));
+router.post("/deleteProject", function (req, res, next) {
+  const id = req.body.id;
+  console.log("id: ", id);
+  db.run("DELETE FROM projects WHERE id = ?", [id], function (err) {
+    if (err) {
+      return next(err);
     }
-  );
+    return res.redirect("/" + (req.body.filter || ""));
+  });
 });
 
 module.exports = router;
