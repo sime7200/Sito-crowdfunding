@@ -167,8 +167,8 @@ router.post("/saveProject", function (req, res, next) {
 
 //elimina progetto
 router.post("/deleteProject", function (req, res, next) {
-  const id = req.body.id;
-  console.log("id: ", id);
+  const id = req.body.deleteProjectId;
+
   db.run("DELETE FROM projects WHERE id = ?", [id], function (err) {
     if (err) {
       return next(err);
