@@ -102,27 +102,25 @@
               </div>
             </div>
           </div>
-
-          <!--
-          <form role="form" method="POST" action="/newDocument">
-            <button class="btn btn-success" type="submit">
-              Aggiungi documento
-            </button>
-          </form>
--->
-
-          <form action="/modifica" method="put">
-            <button class="btn btn-success" type="button">
-              Modifica progetto
-            </button>
-          </form>
-          <form role="form" method="POST" action="/saveProject">
-            <button class="btn btn-success" type="submit">
-              Salva progetto
-            </button>
-          </form>
         </div>
       </div>
+    </div>
+    <div class="buttons-container">
+      <form action="/modifica" method="PUT">
+        <button class="btn btn-success" type="submit">
+          Modifica progetto
+        </button>
+      </form>
+      <form role="form" method="POST" action="/saveProject">
+        <button class="btn btn-success" type="submit">
+          Salva progetto
+        </button>
+      </form>
+      <form action="/delete" method="DELETE">
+        <button class="btn btn-success" type="submit">
+          Elimina progetto
+        </button>
+      </form>
     </div>
 
     <%- include('partials/footer.ejs');%>

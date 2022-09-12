@@ -69,14 +69,75 @@ router.get(
 
 router.get(
   "/project-details/:id",
-  fetchProjectsById,
+  fetchProjectsById
+  /*
   function (req, res, next) {
     res.render("dettaglioProg", {
       user: res.user,
     });
     next();
   }
+  */
 );
+
+//modifica progetto non vaaaa
+/*
+router.put("/modifica", function (req, res, next) {
+  db.run(
+    "REPLACE INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
+    [
+      req.session.passport.user.id,
+      req.body.title,
+      req.body.description,
+      req.body.category,
+      req.body.image,
+      req.body.author_name,
+    ],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.status(200).redirect("/" + (req.body.filter || ""));
+    }
+  );
+});
+
+//oppure così
+router.post(
+  "/modifica/:id)",
+  function (req, res, next) {
+    db.run(
+      "DELETE FROM projects WHERE id = ? AND owner_id = ?",
+      [req.params.id, req.user.id],
+      function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect("/" + (req.body.filter || ""));
+      }
+    );
+  },
+  function (req, res, next) {
+    db.run(
+      "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ? AND owner_id = ?",
+      [
+        req.body.title,
+        req.body.description,
+        req.body.category,
+        req.body.image,
+        req.params.id,
+        req.user.id,
+      ],
+      function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect("/" + (req.body.filter || ""));
+      }
+    );
+  }
+);
+*/
 
 router.post("/search", fetchProjects, function (req, res, next) {
   const searchValue = req.body.searchValue;
@@ -100,6 +161,20 @@ router.post("/saveProject", function (req, res, next) {
       return res
         .status(200)
         .redirect("/project-details/:id" + (req.body.filter || ""));
+    }
+  );
+});
+
+//elimina progetto
+router.post("/delete/:id", function (req, res, next) {
+  db.run(
+    "DELETE FROM projects WHERE id = ? AND owner_id = ?",
+    [req.params.id, req.user.id],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect("/" + (req.body.filter || ""));
     }
   );
 });

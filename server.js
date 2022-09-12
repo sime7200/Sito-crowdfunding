@@ -98,7 +98,7 @@ app.get("/", function (req, res, next) {
   return res.render("index", { user: req.user });
 });
 
-// about page
+// login page
 app.get("/login", function (req, res) {
   res.render("login"); //non specifico l'estensione
 });
@@ -122,6 +122,10 @@ app.use(passport.session());
 app.get("/logout", function (req, res) {
   req.logout();
   res.render("index");
+});
+
+app.get("/project-details/:id", function (req, res) {
+  res.render("dettaglioProg", { user: req.user });
 });
 
 app.listen(3002);
