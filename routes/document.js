@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/newDocument", function (req, res, next) {
+  console.log("->", req.body.id, req.body.description, req.body.title);
   db.run(
     "INSERT INTO documents (author,title,description,date,type,project_id) VALUES (?,?,?,?,?,?)",
     [
@@ -17,9 +18,7 @@ router.post("/newDocument", function (req, res, next) {
       if (err) {
         return next(err);
       }
-      return res
-        .status(200)
-        .redirect("/project-details/:id" + (req.body.filter || ""));
+      return res.status(200).redirect("/" + (req.body.filter || ""));
     }
   );
 });

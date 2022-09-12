@@ -39,7 +39,7 @@ router.post("/createProject", function (req, res, next) {
       req.body.description,
       req.body.category,
       req.body.image,
-      req.body.author_name,
+      req.session.passport.user.username,
     ],
     function (err) {
       if (err) {
@@ -81,17 +81,17 @@ router.get(
 );
 
 //modifica progetto non vaaaa
-/*
-router.put("/modifica", function (req, res, next) {
+router.post("/modifica", function (req, res, next) {
+  const id = req.body.id_prog;
+  console.log("->", req.body.title, req.body.author_name);
   db.run(
-    "REPLACE INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
+    "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
     [
-      req.session.passport.user.id,
       req.body.title,
       req.body.description,
       req.body.category,
       req.body.image,
-      req.body.author_name,
+      id,
     ],
     function (err) {
       if (err) {
@@ -102,6 +102,7 @@ router.put("/modifica", function (req, res, next) {
   );
 });
 
+/*
 //oppure così
 router.post(
   "/modifica/:id)",
@@ -150,7 +151,7 @@ router.post("/search", fetchProjects, function (req, res, next) {
 });
 
 router.post("/saveProject", function (req, res, next) {
-  const id_project = req.params.id;
+  const id_project = req.body.saveProjectId;
   db.run(
     "INSERT INTO follow (user,id_prog) VALUES (?,?)",
     [req.session.passport.user.id, id_project],
@@ -158,9 +159,7 @@ router.post("/saveProject", function (req, res, next) {
       if (err) {
         return next(err);
       }
-      return res
-        .status(200)
-        .redirect("/project-details/:id" + (req.body.filter || ""));
+      return res.status(200).redirect("/" + (req.body.filter || ""));
     }
   );
 });
