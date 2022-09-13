@@ -10,11 +10,13 @@ const db = require("./db");
 const crypto = require("crypto");
 const projectRoute = require("./routes/project"); //si riferisce a project.js per chiamare tutte le rotte
 const userRoute = require("./routes/user"); //si riferisce a project.js per chiamare tutte le rotte
+const documentRoute = require("./routes/document"); //si riferisce a document.js per chiamare tutte le rotte dei documenti
 
 // per fare andare ejs
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -91,6 +93,7 @@ app.post(
 
 app.use("/", projectRoute);
 app.use("/", userRoute);
+app.use("/", documentRoute);
 
 // index page
 app.get("/", function (req, res, next) {
@@ -128,5 +131,5 @@ app.get("/project-details/:id", function (req, res) {
   res.render("dettaglioProg", { user: req.user });
 });
 
-app.listen(3002);
-console.log("Server is listening on port 3002");
+app.listen(3003);
+console.log("Server is listening on port 3003");

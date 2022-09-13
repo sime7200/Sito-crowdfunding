@@ -1,5 +1,7 @@
 const db = require("../db");
 const express = require("express");
+const multer = require("multer");
+const upload = multer({ dest: "./public/data/uploads/" });
 const router = express.Router();
 
 /*
@@ -15,37 +17,99 @@ function fetchProjects(req, res, next) {
   db.all("SELECT * FROM projects", function (err, items) {
     res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
     res.locals.searchValue = "";
+
     next();
   });
 }
 
 //per selezionare un progetto con quel id
 function fetchProjectsById(req, res, next) {
-  const id = req.params.id;
+  const projectId = req.params.id;
 
-  db.all("SELECT * FROM projects WHERE id=?", [id], function (err, project) {
-    res.locals.project = project[0];
-    next();
-  });
+  db.all(
+    "SELECT * FROM projects WHERE id=?",
+    [projectId],
+    function (err, project) {
+      res.locals.project = project[0];
+
+      next();
+    }
+  );
+}
+function fetchFollowById(req, res, next) {
+  const projectId = req.params.id;
+  const userId = parseInt(req.session.passport.user.id);
+
+  db.all(
+    "SELECT * FROM follow WHERE user=? AND id_prog=?",
+    [userId, projectId],
+    function (err, follow) {
+      const isFollow = !!follow;
+
+      res.locals.project = { ...res.locals.project, isFollow: isFollow };
+
+      next();
+    }
+  );
+}
+function fetchCommentsById(req, res, next) {
+  const projectId = req.params.id;
+
+  db.all(
+    "SELECT * FROM project_comments WHERE project_id=?",
+    [projectId],
+    function (err, comments) {
+      res.locals.comments = comments;
+
+      next();
+    }
+  );
 }
 
 //creo progetto
-router.post("/createProject", function (req, res, next) {
+router.post(
+  "/createProject",
+  upload.single("image"),
+  function (req, res, next) {
+    db.run(
+      "INSERT INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
+      [
+        req.session.passport.user.id,
+        req.body.title,
+        req.body.description,
+        req.body.category,
+        req.file,
+        req.session.passport.user.username,
+      ],
+      function (err) {
+        if (err) {
+          return next(err);
+        }
+        return status(200).redirect("/" + (req.body.filter || ""));
+      }
+    );
+  }
+);
+
+// Creazione nuovo commento
+router.post("/createComment", function (req, res, next) {
+  const projectId = req.body.projectId;
+
+  const description = req.body.description;
   db.run(
-    "INSERT INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
+    "INSERT INTO project_comments (user_id,user_name,project_id,description) VALUES (?,?,?,?)",
     [
       req.session.passport.user.id,
-      req.body.title,
-      req.body.description,
-      req.body.category,
-      req.body.image,
       req.session.passport.user.username,
+      projectId,
+      description,
     ],
     function (err) {
       if (err) {
+        console.log(err);
         return next(err);
       }
-      return res.status(200).redirect("/" + (req.body.filter || ""));
+      return res.redirect(req.get("referer"));
     }
   );
 });
@@ -69,21 +133,15 @@ router.get(
 
 router.get(
   "/project-details/:id",
-  fetchProjectsById
-  /*
-  function (req, res, next) {
-    res.render("dettaglioProg", {
-      user: res.user,
-    });
-    next();
-  }
-  */
+  fetchProjectsById,
+  fetchFollowById,
+  fetchCommentsById
 );
 
 //modifica progetto non vaaaa
 router.post("/modifica", function (req, res, next) {
   const id = req.body.id_prog;
-  console.log("->", req.body.title, req.body.author_name);
+  g("->", req.body.title, req.body.author_name);
   db.run(
     "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
     [

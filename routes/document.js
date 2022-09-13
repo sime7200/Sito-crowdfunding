@@ -3,9 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/newDocument", function (req, res, next) {
-  console.log("->", req.body.id, req.body.description, req.body.title);
   db.run(
-    "INSERT INTO documents (author,title,description,date,type,project_id) VALUES (?,?,?,?,?,?)",
+    "INSERT INTO documents (author,title,description,date,type,project_id, user_id) VALUES (?,?,?,?,?,?,?)",
     [
       req.body.author,
       req.body.title,
@@ -13,6 +12,7 @@ router.post("/newDocument", function (req, res, next) {
       req.body.date,
       req.body.type,
       req.body.project_id,
+      req.session.passport.user.id,
     ],
     function (err) {
       if (err) {

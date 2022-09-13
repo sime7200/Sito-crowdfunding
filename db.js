@@ -37,7 +37,8 @@ db.serialize(function () {
     description TEXT NOT NULL, \
     date DATE NOT NULL, \
     type NUMERIC NOT NULL, \
-    project_id INTEGER NOT NULL\
+    project_id INTEGER NOT NULL,\
+    user_id INTEGER NOT NULL\
   )"
   );
 
@@ -45,6 +46,17 @@ db.serialize(function () {
     "CREATE TABLE IF NOT EXISTS follow ( \
     user INTEGER NOT NULL,  \
     id_prog INTEGER NOT NULL\
+  )"
+  );
+
+  db.run(
+    "CREATE TABLE IF NOT EXISTS project_comments ( \
+    id INTEGER PRIMARY KEY, \
+    user_id INTEGER NOT NULL,  \
+    user_name TEXT NOT NULL,  \
+    project_id INTEGER NOT NULL, \
+    description TEXT NOT NULL, \
+    creation_date REAL DEFAULT (datetime('now', 'localtime')) \
   )"
   );
 
