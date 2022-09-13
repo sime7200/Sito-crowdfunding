@@ -116,8 +116,8 @@ app.get("/contatti", function (req, res) {
   res.render("contatti", { user: req.user });
 });
 
-app.get("/creatore", function (req, res) {
-  res.render("pagCreatore", { user: req.user });
+app.get("/profilo", function (req, res) {
+  res.render("my", { user: req.user });
 });
 
 app.use(passport.session());

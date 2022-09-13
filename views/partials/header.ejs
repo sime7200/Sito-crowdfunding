@@ -35,6 +35,7 @@
       </form>
 
       <% } %> <% if(user && user.id ){ %>
+      <h4>Ciao <%=user.username %></h4>
       <form action="/logout" method="post">
         <button class="logout btn btn-primary" type="submit">LOGOUT</button>
       </form>
