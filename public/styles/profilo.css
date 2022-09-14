@@ -1,0 +1,12 @@
+.container-card {
+  margin: 25px auto 0;
+  max-width: 800px;
+  background-color: white;
+}
+
+.card {
+  border-color: blue;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-left: 5px;
+}

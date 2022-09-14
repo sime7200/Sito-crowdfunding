@@ -16,14 +16,35 @@
       <div class="container">
         <div class="row">
           <div class="col mx-auto text-center">
-            <h1 class="font-weight-bold">Lista Progetti</h1>
+            <h1 class="font-weight-bold">A project, together</h1>
+            <button class="btn btn-success btn-lg" href="#elenco-progetti">
+              Progetti
+            </button>
           </div>
         </div>
       </div>
     </header>
+    <div class="container testo mx-auto">
+      <p>
+        Il crowdfunding è un processo collaborativo di un gruppo di persone che
+        utilizza il proprio denaro in comune per sostenere gli sforzi di persone
+        e organizzazioni. È una pratica di microfinanziamento dal basso che
+        mobilita persone e risorse. Il web è solitamente la piattaforma che
+        permette l'incontro e la collaborazione dei soggetti coinvolti in un
+        progetto di crowdfunding. Secondo il Framework for European
+        Crowdfunding, «l'ascesa del crowdfunding negli ultimi dieci anni deriva
+        dal proliferare e dall'affermarsi di applicazioni web e di servizi
+        mobile, condizioni che consentono a imprenditori, imprese e creativi di
+        ogni genere di poter dialogare con la crowd per ottenere idee,
+        raccogliere soldi e sollecitare input sul prodotto o servizio che hanno
+        intenzione di proporre». Il crowdfunding è un'importante fonte di
+        finanziamento ogni anno per circa mezzo milione di progetti europei che
+        altrimenti non riceverebbero mai i fondi per vedere la luce.
+      </p>
+    </div>
 
     <div class="container mx-auto m-5">
-      <h4>Cerca Progetto</h4>
+      <h2>Cerca Progetto</h2>
 
       <div class="d-flex">
         <input
@@ -50,43 +71,47 @@
       </div>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-12 mx-auto">
-          <% if(user){ %>
-          <button
-            class="btn btn-success mb-3"
-            data-toggle="modal"
-            data-target="#new-project"
-          >
-            Aggiungi progetto
-          </button>
-          <% } %>
-          <table id="project-table" class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Titolo</th>
-                <th scope="col">Descrizione</th>
-                <th scope="col">Categoria</th>
-                <th scope="col">Autore</th>
-              </tr>
-            </thead>
-            <tbody id="table-project-body">
-              <% projects.forEach(element => { %>
-              <tr>
-                <td><%=element.id%></td>
-                <td><%=element.title%></td>
-                <td><%=element.description%></td>
-                <td><%=element.category%></td>
-                <td><%=element.author_name%></td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
+    <section id="elenco-progetti">
+      <div class="container">
+        <div id="elenco-progetti" class="row">
+          <div class="col-12 mx-auto">
+            <h2>Lista progetti</h2>
+
+            <table id="project-table" class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Titolo</th>
+                  <th scope="col">Descrizione</th>
+                  <th scope="col">Categoria</th>
+                  <th scope="col">Autore</th>
+                </tr>
+              </thead>
+              <tbody id="table-project-body">
+                <% projects.forEach(element => { %>
+                <tr>
+                  <td><%=element.id%></td>
+                  <td><%=element.title%></td>
+                  <td><%=element.description%></td>
+                  <td><%=element.category%></td>
+                  <td><%=element.author_name%></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            <% if(user){ %>
+            <button
+              class="btn btn-success mb-3"
+              data-toggle="modal"
+              data-target="#new-project"
+            >
+              Aggiungi progetto
+            </button>
+            <% } %>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <div class="modal fade" id="new-project" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -111,7 +136,7 @@
           >
             <div class="modal-body">
               <div class="form-group">
-                <label for="titolo">Titolo</label>
+                <label for="title">Titolo</label>
                 <input type="text" name="title" class="form-control" required />
               </div>
 

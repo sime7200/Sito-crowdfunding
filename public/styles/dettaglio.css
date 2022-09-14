@@ -18,6 +18,13 @@
   width: 100%;
 }
 
+.row-doc {
+  padding-top: 25px;
+}
+.row-commenti {
+  padding-top: 25px;
+}
+
 #firstL {
   text-transform: capitalize;
 }
@@ -28,4 +35,9 @@
 }
 .info-utente h4 {
   font-weight: bold;
+}
+
+.btn_aggiungiDoc {
+  padding-top: 5px;
+  align-items: flex-endS;
 }

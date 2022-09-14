@@ -12,16 +12,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <img
-        src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo-black.svg"
-        alt=""
-        width="110"
-        height="90"
-      />
+      <a href="/"
+        ><img
+          src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo-black.svg"
+          width="110"
+          height="90"
+      /></a>
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="nav-links">
-        <li>
-          <a href="/">Home</a>
-        </li>
         <li>
           <a href="/mission">Mission</a>
         </li>
@@ -29,16 +26,44 @@
           <a href="/contatti">Contatti</a>
         </li>
       </ul>
+      <!--se sei loggato-->
       <% if(!(user)){ %>
       <form action="/login" method="get">
         <button class="login btn btn-primary" type="submit">LOGIN</button>
       </form>
 
+      <!--se non sei loggato-->
       <% } %> <% if(user && user.id ){ %>
-      <h4>Ciao <%=user.username %></h4>
+
+      <div class="btn-group dropstart">
+        <button
+          type="button"
+          class="btn btn-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <%=user.username %>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="/profilo">Area personale</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <form class="dropdown-item" action="/logout" method="post">
+              <button class="logout btn" type="submit">LOGOUT</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+
+      <!--
+          <li><a class="dropdown-item" href="#">LOGOUT</a></li>
+        </ul>
+      </div>
+
       <form action="/logout" method="post">
         <button class="logout btn btn-primary" type="submit">LOGOUT</button>
       </form>
+      -->
       <% } %>
     </div>
   </div>

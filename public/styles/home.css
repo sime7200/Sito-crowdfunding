@@ -22,6 +22,11 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.testo {
+  color: black;
+  padding-top: 6px;
+}
+
 #tabella {
   padding-top: 2rem;
 }

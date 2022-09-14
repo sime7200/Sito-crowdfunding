@@ -8,6 +8,8 @@
   <body>
     <!--Inizio navbar-->
     <%- include('partials/header');%>
+    <!--fine navbar-->
+
     <div class="container">
       <div class="row">
         <h1 class="mt-4">Dettaglio progetto</h1>
@@ -38,8 +40,7 @@
               Rimuovi dai preferiti
             </button>
           </form>
-          <% } %>
-
+          <% } %> <% if(user && user.username==project.author_name) {%>
           <div class="btn-modal mr-2">
             <button
               class="btn btn-primary"
@@ -59,6 +60,7 @@
               Elimina progetto
             </button>
           </form>
+          <%}%>
         </div>
       </div>
       <div class="row row-dettaglio">
@@ -90,20 +92,8 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="btn-modal">
-          <% if(user && user.username==project.author_name) {%>
-          <button
-            class="btn btn-success"
-            data-toggle="modal"
-            data-target="#new-document"
-          >
-            Aggiungi documento
-          </button>
-          <%}%>
-        </div>
-      </div>
-      <div class="row">
+
+      <div class="row-doc">
         <h2>Documenti</h2>
         <table id="documents-table" class="table">
           <thead class="thead-dark">
@@ -113,6 +103,7 @@
               <th scope="col">Autore</th>
               <th scope="col">Descrizione</th>
               <th scope="col">Data</th>
+              <th scope="col">Prezzo (€)</th>
             </tr>
           </thead>
           <tbody id="table-documents-body">
@@ -123,10 +114,24 @@
               <td><%=element.author%></td>
               <td><%=element.description%></td>
               <td><%=element.date%></td>
+              <td><%=element.type%></td>
             </tr>
             <% }); %>
           </tbody>
         </table>
+        <div class="row btn_aggiungiDoc">
+          <div class="btn-modal">
+            <% if(user && user.username==project.author_name) {%>
+            <button
+              class="btn btn-success"
+              data-toggle="modal"
+              data-target="#new-document"
+            >
+              Aggiungi documento
+            </button>
+            <%}%>
+          </div>
+        </div>
       </div>
       <div class="row-commenti">
         <h2>Commenti</h2>
@@ -241,7 +246,6 @@
     </div>
 
     <!--Modale modifica progetto-->
-
     <div class="modal fade" id="modifica-prog" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -266,13 +270,6 @@
                   value="<%= project.author_name%>"
                   >Autore: <%= project.author_name%></label
                 >
-                <!--
-                <input
-                  type="text"
-                  name="author"
-                  class="form-control"
-                />
-                -->
               </div>
 
               <div class="form-group">
@@ -292,6 +289,8 @@
                   <option>Tecnologia</option>
                   <option>Cucina</option>
                   <option>Animali</option>
+                  <option>Arredamento</option>
+                  <option>Sport</option>
                 </select>
               </div>
 

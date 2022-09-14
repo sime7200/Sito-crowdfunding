@@ -10,16 +10,28 @@
     <%- include('partials/header');%>
     <!--Fine navbar-->
 
-    <div class="box">
-      <h1>Personal details</h1>
-      <h3>Id</h3>
-      <p><%= user.id%></p>
-
-      <h3>Username</h3>
-      <p><%= user.username%></p>
-
-      <h3>Role</h3>
-      <p><%= user.role%></p>
+    <div class="row-profilo">
+      <div class="container-card">
+        <div class="col-8 mx-auto">
+          <h1 class="text-center">Area personale</h1>
+          <div class="card">
+            <div class="Id utente">
+              <h4>Id</h4>
+              <p id="id" name="id" for="id">Id utente: <%= user.id%></p>
+            </div>
+            <div class="username">
+              <h4>Username</h4>
+              <p>Nome utente: <%= user.username%></p>
+            </div>
+            <div class="descrizione">
+              <h4>Ruolo</h4>
+              <p id="role" name="role" for="role">
+                Ruolo utente: <%= user.role%>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <%- include('partials/footer.ejs');%>

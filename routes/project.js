@@ -5,7 +5,7 @@ const multer = require("multer");
 const upload = multer({
   dest: "public/uploads",
   limits: {
-    fileSize: 3000000,
+    fileSize: 30000000,
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
@@ -113,14 +113,13 @@ router.post(
       "INSERT INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
       [
         req.session.passport.user.id,
-        req.body.titolo,
+        req.body.title,
         req.body.description,
         req.body.category,
         filename,
         req.session.passport.user.username,
       ],
       function (err) {
-        console.log("tit", titolo);
         if (err) {
           return next(err);
         }
@@ -180,7 +179,7 @@ router.get(
 //modifica progetto non vaaaa
 router.post("/modifica", function (req, res, next) {
   const id = req.body.id_prog;
-  g("->", req.body.title, req.body.author_name);
+  "->", req.body.title, req.body.author_name;
   db.run(
     "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
     [
