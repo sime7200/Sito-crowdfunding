@@ -52,7 +52,13 @@ function fetchProjectsById(req, res, next) {
 }
 function fetchFollowById(req, res, next) {
   const projectId = req.params.id;
-  const userId = parseInt(req.session.passport.user.id);
+  const userId =
+    req.session &&
+    req.session.passport &&
+    req.session.passport.user &&
+    parseInt(req.session.passport.user.id);
+
+  if (!userId) return next();
 
   db.all(
     "SELECT * FROM follow WHERE user=? AND id_prog=?",

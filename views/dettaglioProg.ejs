@@ -92,7 +92,7 @@
       </div>
       <div class="row">
         <div class="btn-modal">
-          <% if(user.username==project.author_name) {%>
+          <% if(user && user.username==project.author_name) {%>
           <button
             class="btn btn-success"
             data-toggle="modal"
