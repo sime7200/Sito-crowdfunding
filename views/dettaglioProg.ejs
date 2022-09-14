@@ -11,30 +11,35 @@
     <div class="container">
       <div class="row">
         <h1 class="mt-4">Dettaglio progetto</h1>
-        <div class="col-12 d-flex justify-content-end my-3">
-          <form method="POST" action="/saveProject">
-            <%if(project && !project.isFollow) {%>
+        <div class="col-12 d-flex justify-content-end my-4 pb-4">
+          <%if(!project.isFollow) {%>
+          <form method="POST" action="/addFollow">
             <button
               class="btn btn-primary mr-2"
               type="submit"
-              name="saveProjectId"
+              name="projectId"
               value="<%= project.id %> "
             >
               <i class="fa fa-star-o"></i>
-              <%= project.isFollow %>
+              Aggiungi ai preferiti
             </button>
-            <% } %> <%if(project && project.isFollow) {%>
+          </form>
+          <% } %>
+          <div></div>
+          <%if(project.isFollow) {%>
+          <form method="POST" action="/removeFollow">
             <button
               class="btn btn-primary mr-2"
               type="submit"
-              name="saveProjectId"
+              name="projectId"
               value="<%= project.id %> "
             >
               <i class="fa fa-star"></i>
-              Non seguire più
+              Rimuovi dai preferiti
             </button>
-            <% } %>
           </form>
+          <% } %>
+
           <div class="btn-modal mr-2">
             <button
               class="btn btn-primary"
@@ -58,9 +63,7 @@
       </div>
       <div class="row row-dettaglio">
         <div class="col-4">
-          <img
-            src="https://images.unsplash.com/photo-1662581871665-f299ba8ace07?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-          />
+          <img src="<%= project.image %>" />
         </div>
         <div class="col-8">
           <div class="info-utente">
@@ -313,5 +316,6 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+    <script type="text/javascript" src="/javascript/index.js"></script>
   </body>
 </html>

@@ -8,14 +8,14 @@
 
 .row-dettaglio {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   justify-content: space-around;
 }
 
-.col-4 img {
-  max-width: 100%;
-  padding: 50px 0;
+.row-dettaglio img {
+  height: 100%;
+  width: 100%;
 }
 
 #firstL {

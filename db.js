@@ -22,7 +22,7 @@ db.serialize(function () {
     title TEXT NOT NULL, \
     description TEXT NOT NULL, \
     category TEXT NOT NULL, \
-    image BLOB NOT NULL, \
+    image TEXT NOT NULL, \
     author_name TEXT NOT NULL, \
     donations_count INTEGER, \
     donations_total REAL \

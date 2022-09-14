@@ -1,7 +1,19 @@
 const db = require("../db");
 const express = require("express");
 const multer = require("multer");
-const upload = multer({ dest: "./public/data/uploads/" });
+
+const upload = multer({
+  dest: "public/uploads",
+  limits: {
+    fileSize: 3000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Please upload an image"));
+    }
+    cb(undefined, true);
+  },
+});
 const router = express.Router();
 
 /*
@@ -30,6 +42,8 @@ function fetchProjectsById(req, res, next) {
     "SELECT * FROM projects WHERE id=?",
     [projectId],
     function (err, project) {
+      const imageUrl =
+        req.protocol + "://" + req.headers.host + "/" + project[0].image;
       res.locals.project = project[0];
 
       next();
@@ -44,7 +58,7 @@ function fetchFollowById(req, res, next) {
     "SELECT * FROM follow WHERE user=? AND id_prog=?",
     [userId, projectId],
     function (err, follow) {
-      const isFollow = !!follow;
+      const isFollow = follow && follow.length ? true : false;
 
       res.locals.project = { ...res.locals.project, isFollow: isFollow };
 
@@ -70,7 +84,13 @@ function fetchCommentsById(req, res, next) {
 router.post(
   "/createProject",
   upload.single("image"),
-  function (req, res, next) {
+  async function (req, res, next) {
+    const filename = "/uploads/" + req.file.filename;
+
+    if (!req.file) {
+      res.status(401).json({ error: "Please provide an image" });
+    }
+
     db.run(
       "INSERT INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
       [
@@ -78,14 +98,14 @@ router.post(
         req.body.title,
         req.body.description,
         req.body.category,
-        req.file,
+        filename,
         req.session.passport.user.username,
       ],
       function (err) {
         if (err) {
           return next(err);
         }
-        return status(200).redirect("/" + (req.body.filter || ""));
+        return res.redirect("/" + (req.body.filter || ""));
       }
     );
   }
@@ -208,8 +228,8 @@ router.post("/search", fetchProjects, function (req, res, next) {
   res.json(res.locals.projects);
 });
 
-router.post("/saveProject", function (req, res, next) {
-  const id_project = req.body.saveProjectId;
+router.post("/addFollow", function (req, res, next) {
+  const id_project = req.body.projectId;
   db.run(
     "INSERT INTO follow (user,id_prog) VALUES (?,?)",
     [req.session.passport.user.id, id_project],
@@ -217,7 +237,25 @@ router.post("/saveProject", function (req, res, next) {
       if (err) {
         return next(err);
       }
-      return res.status(200).redirect("/" + (req.body.filter || ""));
+
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
+router.post("/removeFollow", function (req, res, next) {
+  const id_project = req.body.projectId;
+
+  db.run(
+    "DELETE FROM follow  WHERE user=? AND id_prog=?",
+    [req.session.passport.user.id, parseInt(id_project)],
+    function (err) {
+      if (err) {
+        console.log("eee", err);
+        return next(err);
+      }
+
+      return res.redirect(req.get("referer"));
     }
   );
 });
