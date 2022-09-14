@@ -18,7 +18,8 @@ router.post("/newDocument", function (req, res, next) {
       if (err) {
         return next(err);
       }
-      return res.status(200).redirect("/" + (req.body.filter || ""));
+      return res.redirect(req.get("referer"));
+      //return res.status(200).redirect("/" + (req.body.filter || ""));
     }
   );
 });
@@ -28,7 +29,7 @@ function fetchDocuments(req, res, next) {
     "SELECT * FROM documents",
     [req.session.passport.user.id],
     function (err, items) {
-      res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
+      res.locals.documents = items; //projects è il nome di una variabile che ho appena creato
       next();
     }
   );

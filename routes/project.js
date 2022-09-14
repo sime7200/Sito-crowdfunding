@@ -80,6 +80,18 @@ function fetchCommentsById(req, res, next) {
   );
 }
 
+function fetchDocuments(req, res, next) {
+  const projectId = req.params.id;
+  db.all(
+    "SELECT * FROM documents WHERE project_id=?",
+    [projectId],
+    function (err, items) {
+      res.locals.documents = items; //documents è il nome di una variabile che ho appena creato
+      next();
+    }
+  );
+}
+
 //creo progetto
 router.post(
   "/createProject",
@@ -95,13 +107,14 @@ router.post(
       "INSERT INTO projects (owner_id,title,description,category,image,author_name) VALUES (?,?,?,?,?,?)",
       [
         req.session.passport.user.id,
-        req.body.title,
+        req.body.titolo,
         req.body.description,
         req.body.category,
         filename,
         req.session.passport.user.username,
       ],
       function (err) {
+        console.log("tit", titolo);
         if (err) {
           return next(err);
         }
@@ -114,7 +127,6 @@ router.post(
 // Creazione nuovo commento
 router.post("/createComment", function (req, res, next) {
   const projectId = req.body.projectId;
-
   const description = req.body.description;
   db.run(
     "INSERT INTO project_comments (user_id,user_name,project_id,description) VALUES (?,?,?,?)",
@@ -155,7 +167,8 @@ router.get(
   "/project-details/:id",
   fetchProjectsById,
   fetchFollowById,
-  fetchCommentsById
+  fetchCommentsById,
+  fetchDocuments
 );
 
 //modifica progetto non vaaaa

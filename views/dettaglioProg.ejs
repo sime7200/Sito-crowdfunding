@@ -92,6 +92,7 @@
       </div>
       <div class="row">
         <div class="btn-modal">
+          <% if(user.username==project.author_name) {%>
           <button
             class="btn btn-success"
             data-toggle="modal"
@@ -99,12 +100,35 @@
           >
             Aggiungi documento
           </button>
+          <%}%>
         </div>
       </div>
       <div class="row">
         <h2>Documenti</h2>
+        <table id="documents-table" class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Titolo</th>
+              <th scope="col">Autore</th>
+              <th scope="col">Descrizione</th>
+              <th scope="col">Data</th>
+            </tr>
+          </thead>
+          <tbody id="table-documents-body">
+            <% documents.forEach(element => { %>
+            <tr>
+              <td><%=element.id%></td>
+              <td><%=element.title%></td>
+              <td><%=element.author%></td>
+              <td><%=element.description%></td>
+              <td><%=element.date%></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
       </div>
-      <div class="row">
+      <div class="row-commenti">
         <h2>Commenti</h2>
         <div class="col-12">
           <form action="/createComment" method="POST">
@@ -116,6 +140,7 @@
                 cols="100"
               ></textarea>
             </div>
+
             <button
               class="btn btn-primary"
               type="submit"
