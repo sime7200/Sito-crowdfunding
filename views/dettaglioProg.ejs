@@ -131,6 +131,34 @@
             </button>
             <%}%>
           </div>
+
+          <%if(!documents.isFollowDoc) {%>
+          <form method="POST" action="/addFollowDoc">
+            <button
+              class="btn btn-primary mr-2"
+              type="submit"
+              name="docId"
+              value="<%= documents.id %> "
+            >
+              <i class="fa fa-star-o"></i>
+              Aggiungi documento ai preferiti
+            </button>
+          </form>
+          <% } %>
+          <div></div>
+          <%if(documents.isFollowDoc) {%>
+          <form method="POST" action="/removeFollowDoc">
+            <button
+              class="btn btn-primary mr-2"
+              type="submit"
+              name="docId"
+              value="<%= documents.id %> "
+            >
+              <i class="fa fa-star"></i>
+              Rimuovi documento dai preferiti
+            </button>
+          </form>
+          <% } %>
         </div>
       </div>
       <div class="row-commenti">

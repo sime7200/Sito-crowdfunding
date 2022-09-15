@@ -73,13 +73,39 @@ function fetchFollowById(req, res, next) {
   );
 }
 function fetchCommentsById(req, res, next) {
-  const projectId = req.params.id;
+  const projectId = req.body.id;
 
   db.all(
     "SELECT * FROM project_comments WHERE project_id=?",
     [projectId],
     function (err, comments) {
       res.locals.comments = comments;
+
+      next();
+    }
+  );
+}
+
+function fetchFollowDocById(req, res, next) {
+  const docId = req.params.docId;
+  const userId =
+    req.session &&
+    req.session.passport &&
+    req.session.passport.user &&
+    parseInt(req.session.passport.user.id);
+
+  if (!userId) return next();
+
+  db.all(
+    "SELECT * FROM followDocuments WHERE user_id=? AND doc_id=?",
+    [userId, docId],
+    function (err, follow) {
+      const isFollowDoc = follow && follow.length ? true : false;
+
+      res.locals.document = {
+        ...res.locals.document,
+        isFollowDoc: isFollowDoc,
+      };
 
       next();
     }
@@ -173,6 +199,7 @@ router.get(
   fetchProjectsById,
   fetchFollowById,
   fetchCommentsById,
+  fetchFollowDocById,
   fetchDocuments
 );
 
@@ -269,7 +296,6 @@ router.post("/removeFollow", function (req, res, next) {
     [req.session.passport.user.id, parseInt(id_project)],
     function (err) {
       if (err) {
-        console.log("eee", err);
         return next(err);
       }
 

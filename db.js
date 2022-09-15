@@ -50,6 +50,13 @@ db.serialize(function () {
   );
 
   db.run(
+    "CREATE TABLE IF NOT EXISTS followDocuments ( \
+    user_id INTEGER NOT NULL,  \
+    doc_id INTEGER NOT NULL\
+  )"
+  );
+
+  db.run(
     "CREATE TABLE IF NOT EXISTS project_comments ( \
     id INTEGER PRIMARY KEY, \
     user_id INTEGER NOT NULL,  \

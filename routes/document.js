@@ -24,6 +24,37 @@ router.post("/newDocument", function (req, res, next) {
   );
 });
 
+router.post("/addFollowDoc", function (req, res, next) {
+  const docId = req.body.docId;
+  db.run(
+    "INSERT INTO followDocuments (user_id,doc_id) VALUES (?,?)",
+    [req.session.passport.user.id, docId],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
+router.post("/removeFollowDoc", function (req, res, next) {
+  const docId = req.body.docId;
+
+  db.run(
+    "DELETE FROM followDocuments  WHERE user_id=? AND doc_id=?",
+    [req.session.passport.user.id, parseInt(docId)],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
 function fetchDocuments(req, res, next) {
   db.all(
     "SELECT * FROM documents",
