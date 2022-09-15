@@ -18,14 +18,12 @@ function addOnClickRow() {
 
 addOnClickRow();
 
-function goToPageDetails(id) {
-  window.location.pathname = `/project-details/${id}`;
-}
-
-async function searchProject() {
+async function searchProject(reset) {
   const value = document.getElementById("searchValue").value;
   const projectCheckbox = document.getElementsByName("progetto-checkbox")[0];
   const documentCheckbox = document.getElementsByName("documento-checkbox")[0];
+
+  if (reset) searchValue.value = "";
 
   try {
     let response = await fetch("/search", {
@@ -35,7 +33,7 @@ async function searchProject() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        searchValue: value,
+        searchValue: reset ? "" : value,
         checkInProjet: projectCheckbox.checked,
         checkInDocument: documentCheckbox.checked,
       }),
@@ -61,4 +59,46 @@ async function searchProject() {
   } catch (error) {
     console.log(error);
   }
+}
+async function addDocToFavourites(id) {
+  try {
+    await fetch("/addDocToFollow", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        docId: id,
+      }),
+    });
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function removeDocFromFavourites(id) {
+  try {
+    await fetch("/removeDocFromFollow", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        docId: id,
+      }),
+    });
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function onOpenUpdateCommentModal(description, id) {
+  const inputDescription = document.getElementById("comment-description");
+  const commentId = document.getElementById("comment_id");
+
+  inputDescription.value = description;
+  commentId.value = id;
 }

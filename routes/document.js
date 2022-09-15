@@ -24,46 +24,81 @@ router.post("/newDocument", function (req, res, next) {
   );
 });
 
-router.post("/addFollowDoc", function (req, res, next) {
-  const docId = req.body.docId;
-  db.run(
-    "INSERT INTO followDocuments (user_id,doc_id) VALUES (?,?)",
-    [req.session.passport.user.id, docId],
-    function (err) {
-      if (err) {
-        return next(err);
-      }
-
-      return res.redirect(req.get("referer"));
-    }
-  );
-});
-
-router.post("/removeFollowDoc", function (req, res, next) {
-  const docId = req.body.docId;
-
-  db.run(
-    "DELETE FROM followDocuments  WHERE user_id=? AND doc_id=?",
-    [req.session.passport.user.id, parseInt(docId)],
-    function (err) {
-      if (err) {
-        return next(err);
-      }
-
-      return res.redirect(req.get("referer"));
-    }
-  );
-});
-
 function fetchDocuments(req, res, next) {
+  const projectId = req.params.id;
   db.all(
-    "SELECT * FROM documents",
-    [req.session.passport.user.id],
+    "SELECT * FROM documents WHERE project_id=?",
+    [projectId],
     function (err, items) {
-      res.locals.documents = items; //projects è il nome di una variabile che ho appena creato
+      res.locals.documents = items; //documents è il nome di una variabile che ho appena creato
       next();
     }
   );
 }
 
-module.exports = router;
+function fetchFollowDocById(req, res, next) {
+  const userId =
+    req.session &&
+    req.session.passport &&
+    req.session.passport.user &&
+    parseInt(req.session.passport.user.id);
+
+  if (!userId) return next();
+
+  db.all(
+    "SELECT * FROM followDocuments WHERE user_id=?",
+    [userId],
+    function (err, documentsFollowed) {
+      res.locals.documents = res.locals.documents.map((doc) => ({
+        ...doc,
+        isFollow: documentsFollowed.some(
+          (element) => element.doc_id === doc.id
+        ),
+      }));
+
+      next();
+    }
+  );
+}
+
+// Aggiunta doc ai preferiti
+router.post("/addDocToFollow", function (req, res, next) {
+  const docId = req.body.docId;
+
+  db.run(
+    "INSERT INTO followDocuments (user_id, doc_id) VALUES (?,?)",
+    [req.session.passport.user.id, docId],
+    function (err) {
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
+
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
+// Rimuovi doc dai preferiti
+router.post("/removeDocFromFollow", function (req, res, next) {
+  const docId = req.body.docId;
+
+  db.run(
+    "DELETE FROM followDocuments WHERE user_id=? AND doc_id =?",
+    [req.session.passport.user.id, docId],
+    function (err) {
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
+
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
+module.exports = {
+  router: router,
+  fetchDocuments: fetchDocuments,
+  fetchFollowDocById: fetchFollowDocById,
+};

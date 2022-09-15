@@ -37,7 +37,20 @@
   font-weight: bold;
 }
 
-.btn_aggiungiDoc {
+.doc-container {
+  display: flex;
+  justify-content: space-between;
   padding-top: 5px;
-  align-items: flex-endS;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.single-comment {
+  border: 1px solid black;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+#table-documents-body .icon {
+  cursor: pointer;
 }

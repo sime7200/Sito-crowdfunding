@@ -1,6 +1,7 @@
 const db = require("../db");
 const express = require("express");
 const multer = require("multer");
+const documentRoute = require("./document");
 
 const upload = multer({
   dest: "public/uploads",
@@ -42,8 +43,6 @@ function fetchProjectsById(req, res, next) {
     "SELECT * FROM projects WHERE id=?",
     [projectId],
     function (err, project) {
-      const imageUrl =
-        req.protocol + "://" + req.headers.host + "/" + project[0].image;
       res.locals.project = project[0];
 
       next();
@@ -73,52 +72,14 @@ function fetchFollowById(req, res, next) {
   );
 }
 function fetchCommentsById(req, res, next) {
-  const projectId = req.body.id;
+  const projectId = req.params.id;
 
   db.all(
-    "SELECT * FROM project_comments WHERE project_id=?",
+    "SELECT * FROM documents_comments WHERE project_id=?",
     [projectId],
     function (err, comments) {
       res.locals.comments = comments;
 
-      next();
-    }
-  );
-}
-
-function fetchFollowDocById(req, res, next) {
-  const docId = req.params.docId;
-  const userId =
-    req.session &&
-    req.session.passport &&
-    req.session.passport.user &&
-    parseInt(req.session.passport.user.id);
-
-  if (!userId) return next();
-
-  db.all(
-    "SELECT * FROM followDocuments WHERE user_id=? AND doc_id=?",
-    [userId, docId],
-    function (err, follow) {
-      const isFollowDoc = follow && follow.length ? true : false;
-
-      res.locals.document = {
-        ...res.locals.document,
-        isFollowDoc: isFollowDoc,
-      };
-
-      next();
-    }
-  );
-}
-
-function fetchDocuments(req, res, next) {
-  const projectId = req.params.id;
-  db.all(
-    "SELECT * FROM documents WHERE project_id=?",
-    [projectId],
-    function (err, items) {
-      res.locals.documents = items; //documents è il nome di una variabile che ho appena creato
       next();
     }
   );
@@ -160,7 +121,7 @@ router.post("/createComment", function (req, res, next) {
   const projectId = req.body.projectId;
   const description = req.body.description;
   db.run(
-    "INSERT INTO project_comments (user_id,user_name,project_id,description) VALUES (?,?,?,?)",
+    "INSERT INTO documents_comments (user_id,user_name,project_id,description) VALUES (?,?,?,?)",
     [
       req.session.passport.user.id,
       req.session.passport.user.username,
@@ -199,8 +160,8 @@ router.get(
   fetchProjectsById,
   fetchFollowById,
   fetchCommentsById,
-  fetchFollowDocById,
-  fetchDocuments
+  documentRoute.fetchDocuments,
+  documentRoute.fetchFollowDocById
 );
 
 //modifica progetto non vaaaa
@@ -263,11 +224,15 @@ router.post(
 );
 */
 
-router.post("/search", fetchProjects, function (req, res, next) {
-  const searchValue = req.body.searchValue;
+router.post("/search", fetchProjects, async function (req, res, next) {
+  const searchValue =
+    req.body.searchValue && req.body.searchValue.toLowerCase();
 
   res.locals.projects = res.locals.projects.filter(function (project) {
-    return project.title.includes(searchValue);
+    return (
+      project.title.toLowerCase().includes(searchValue) ||
+      project.category.toLowerCase().includes(searchValue)
+    );
   });
 
   res.json(res.locals.projects);
@@ -314,6 +279,23 @@ router.post("/deleteProject", function (req, res, next) {
     }
     return res.redirect("/" + (req.body.filter || ""));
   });
+});
+
+//modifica commento
+router.post("/updateComment", function (req, res, next) {
+  const description = req.body.description;
+  const comment_id = req.body.comment_id;
+
+  db.run(
+    "UPDATE documents_comments SET description=? WHERE id = ?",
+    [description, comment_id],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect(req.get("referer"));
+    }
+  );
 });
 
 module.exports = router;

@@ -92,7 +92,7 @@ app.post(
 
 app.use("/", projectRoute);
 app.use("/", userRoute);
-app.use("/", documentRoute);
+app.use("/", documentRoute.router);
 
 // index page
 app.get("/", function (req, res, next) {

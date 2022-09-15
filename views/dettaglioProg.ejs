@@ -14,7 +14,7 @@
       <div class="row">
         <h1 class="mt-4">Dettaglio progetto</h1>
         <div class="col-12 d-flex justify-content-end my-4 pb-4">
-          <%if(!project.isFollow) {%>
+          <%if(user && !project.isFollow) {%>
           <form method="POST" action="/addFollow">
             <button
               class="btn btn-primary mr-2"
@@ -28,7 +28,7 @@
           </form>
           <% } %>
           <div></div>
-          <%if(project.isFollow) {%>
+          <%if(user && project.isFollow) {%>
           <form method="POST" action="/removeFollow">
             <button
               class="btn btn-primary mr-2"
@@ -94,7 +94,23 @@
       </div>
 
       <div class="row-doc">
-        <h2>Documenti</h2>
+        <div class="row doc-container">
+          <h2>Documenti</h2>
+          <div class="btns d-flex">
+            <div class="btn-modal mr-3">
+              <% if(user && user.username==project.author_name) {%>
+              <button
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#new-document"
+              >
+                Aggiungi documento
+              </button>
+              <%}%>
+            </div>
+          </div>
+        </div>
+        <%if(documents && documents.length) {%>
         <table id="documents-table" class="table">
           <thead class="thead-dark">
             <tr>
@@ -104,6 +120,7 @@
               <th scope="col">Descrizione</th>
               <th scope="col">Data</th>
               <th scope="col">Prezzo (€)</th>
+              <th scope="col">Preferito</th>
             </tr>
           </thead>
           <tbody id="table-documents-body">
@@ -115,54 +132,29 @@
               <td><%=element.description%></td>
               <td><%=element.date%></td>
               <td><%=element.type%></td>
+              <% if(!element.isFollow) { %>
+              <td class="icon" onclick="addDocToFavourites('<%=element.id%>')">
+                <i class="fa fa-star-o"></i>
+              </td>
+              <% } else { %>
+              <td
+                class="icon"
+                onclick="removeDocFromFavourites('<%=element.id%>')"
+              >
+                <i class="fa fa-star"></i>
+              </td>
+              <% }; %>
             </tr>
             <% }); %>
           </tbody>
         </table>
-        <div class="row btn_aggiungiDoc">
-          <div class="btn-modal">
-            <% if(user && user.username==project.author_name) {%>
-            <button
-              class="btn btn-success"
-              data-toggle="modal"
-              data-target="#new-document"
-            >
-              Aggiungi documento
-            </button>
-            <%}%>
-          </div>
-
-          <%if(!documents.isFollowDoc) {%>
-          <form method="POST" action="/addFollowDoc">
-            <button
-              class="btn btn-primary mr-2"
-              type="submit"
-              name="docId"
-              value="<%= documents.id %> "
-            >
-              <i class="fa fa-star-o"></i>
-              Aggiungi documento ai preferiti
-            </button>
-          </form>
-          <% } %>
-          <div></div>
-          <%if(documents.isFollowDoc) {%>
-          <form method="POST" action="/removeFollowDoc">
-            <button
-              class="btn btn-primary mr-2"
-              type="submit"
-              name="docId"
-              value="<%= documents.id %> "
-            >
-              <i class="fa fa-star"></i>
-              Rimuovi documento dai preferiti
-            </button>
-          </form>
-          <% } %>
-        </div>
+        <% }; %>
       </div>
+
       <div class="row-commenti">
+        <% if(comments) {%>
         <h2>Commenti</h2>
+        <% }; %> <%if(user) {%>
         <div class="col-12">
           <form action="/createComment" method="POST">
             <div>
@@ -174,6 +166,7 @@
               ></textarea>
             </div>
 
+            <%if(user) {%>
             <button
               class="btn btn-primary"
               type="submit"
@@ -182,21 +175,83 @@
             >
               Aggiungi commento
             </button>
+            <% }; %>
           </form>
         </div>
-
-        <% if(comments) {%>
+        <% }; %> <% if(comments) {%>
         <div class="list-group">
           <% comments.forEach(comment => { %>
-          <div class="d-flex w-100 justify-content-between">
-            <label>Data</label>
-            <small><%= comment.creation_date %></small>
-          </div>
+          <div class="single-comment">
+            <div class="">
+              <small><strong><%= comment.user_name %></strong></small> -
+              <small><%= comment.creation_date %></small>
+            </div>
 
-          <p class="mb-1"><%= comment.description %></p>
-          <label>Utente</label>
-          <small><%= comment.user_name %></small>
+            <p class="mb-1"><%= comment.description %></p>
+            <% if(user && user.id === comment.user_id) {%>
+            <button
+              onclick="onOpenUpdateCommentModal('<%=comment.description%>', '<%=comment.id%>')"
+              type="button"
+              data-target="#update-comment"
+              data-toggle="modal"
+              class="btn btn-secondary"
+            >
+              Modifica
+            </button>
+            <% } %>
+          </div>
           <% }); %> <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!--Modale aggiungi documento-->
+    <div class="modal fade" id="update-comment" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifica commento</h5>
+            <button
+              type="button"
+              class="close"
+              id="close-modal"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form role="form" method="POST" action="/updateComment">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="description">Descrizione</label>
+
+                <input
+                  id="comment-description"
+                  type="text"
+                  name="description"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  id="comment_id"
+                  type="text"
+                  name="comment_id"
+                  class="form-control"
+                  hidden
+                />
+              </div>
+
+              <div class="modal-footer">
+                <div class="form-group">
+                  <div>
+                    <button class="btn btn-success">Salva</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -368,6 +423,7 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+
     <script type="text/javascript" src="/javascript/index.js"></script>
   </body>
 </html>
