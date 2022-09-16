@@ -49,6 +49,23 @@
       </div>
     </div>
 
+    <div class="container-mail">
+      <h1 id="titolo-contatti">Contattaci</h1>
+
+      <form name="modulo">
+        <strong> Email:</strong><br />
+        <input type="text" name="email" />
+        <br />
+        <strong>Oggetto:</strong><br />
+        <input type="text" name="oggetto" /> <br />
+        <strong>Messaggio:</strong><br />
+        <textarea name="messaggio" rows="10" cols="100"></textarea> <br />
+        <%if(user) {%>
+        <input type="button" value="Invia" onClick="Email()" />
+        <%}%>
+      </form>
+    </div>
+
     <%- include('partials/footer.ejs');%>
 
     <script
@@ -71,5 +88,7 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+
+    <script type="text/javascript" src="/javascript/index.js"></script>
   </body>
 </html>

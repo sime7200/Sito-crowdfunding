@@ -164,27 +164,25 @@ router.get(
   documentRoute.fetchFollowDocById
 );
 
-//modifica progetto non vaaaa
-router.post("/modifica", function (req, res, next) {
-  const id = req.body.id_prog;
-  "->", req.body.title, req.body.author_name;
-  db.run(
-    "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
-    [
-      req.body.title,
-      req.body.description,
-      req.body.category,
-      req.body.image,
-      id,
-    ],
-    function (err) {
-      if (err) {
-        return next(err);
+//modifica progetto non va per l'immagine
+router.post(
+  "/modifica",
+  upload.single("image"),
+  async function (req, res, next) {
+    const filename = "/uploads/" + req.file.filename;
+    const id = req.body.id_prog;
+    db.run(
+      "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
+      [req.body.title, req.body.description, req.body.category, filename, id],
+      function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.status(200).redirect("/" + (req.body.filter || ""));
       }
-      return res.status(200).redirect("/" + (req.body.filter || ""));
-    }
-  );
-});
+    );
+  }
+);
 
 /*
 //oppure così

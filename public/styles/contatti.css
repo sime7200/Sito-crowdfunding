@@ -10,3 +10,18 @@
 #titolo-contatti {
   margin: auto;
 }
+
+.container-mail {
+  margin-left: 35px;
+}
+
+/* Inizio pagina Mission*/
+
+.carousel-item {
+  background-blend-mode: multiply;
+  max-height: 35rem;
+}
+
+#icone {
+  margin: 3rem;
+}
