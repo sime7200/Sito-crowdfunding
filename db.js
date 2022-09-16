@@ -4,7 +4,6 @@ var crypto = require("crypto");
 var db = new sqlite3.Database("./var/db/projects.db");
 
 db.serialize(function () {
-  // create the database schema
   db.run(
     "CREATE TABLE IF NOT EXISTS users ( \
     id INTEGER PRIMARY KEY, \
@@ -24,11 +23,18 @@ db.serialize(function () {
     category TEXT NOT NULL, \
     image TEXT NOT NULL, \
     author_name TEXT NOT NULL, \
-    donations_count INTEGER, \
-    donations_total REAL \
+    donations_total INTEGER DEFAULT 0 \
   )"
   );
 
+  db.run(
+    "CREATE TABLE IF NOT EXISTS donations ( \
+    id_donation INTEGER PRIMARY KEY, \
+    user_id INTEGER NOT NULL, \
+    id_project INTEGER NOT NULL, \
+    cifra INTEGER NOT NULL \
+  )"
+  );
   db.run(
     "CREATE TABLE IF NOT EXISTS documents ( \
     id INTEGER PRIMARY KEY, \

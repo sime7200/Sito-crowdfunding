@@ -43,7 +43,7 @@
           <% } %> <% if(user && user.username==project.author_name) {%>
           <div class="btn-modal mr-2">
             <button
-              class="btn btn-primary"
+              class="btn btn-secondary"
               data-toggle="modal"
               data-target="#modifica-prog"
             >
@@ -52,7 +52,7 @@
           </div>
           <form action="/deleteProject" method="POST">
             <button
-              class="btn btn-warning"
+              class="btn btn-danger"
               type="submit"
               name="deleteProjectId"
               value="<%= project.id %> "
@@ -63,6 +63,8 @@
           <%}%>
         </div>
       </div>
+
+      <!--info progetto-->
       <div class="row row-dettaglio">
         <div class="col-4">
           <img src="<%= project.image %>" />
@@ -89,7 +91,92 @@
               <h4>Categoria</h4>
               <p><%= project.category%></p>
             </div>
+            <div class="donazioni">
+              <h4>Donazioni su questo progetto</h4>
+              <p><%= project.donations_total%> Euro</p>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!--donazioni progetto-->
+      <div class="container mt-4">
+        <h2>Inserisci i dati per la donazione</h2>
+        <div class="row row-carta">
+          <form action="/donation" method="POST">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Name</span>
+              <input
+                name="name"
+                type="text"
+                class="form-control"
+                aria-label="name"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Surname</span>
+              <input
+                name="surname"
+                type="text"
+                class="form-control"
+                aria-label="surname"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Tipo carta</span>
+              <input
+                name="tipo"
+                type="text"
+                class="form-control"
+                aria-label="tipo"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"
+                >Numero carta</span
+              >
+              <input
+                id="numCarta"
+                name="numeroCarta"
+                type="text"
+                class="form-control"
+                aria-label="numeroCarta"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">CVV</span>
+              <input
+                name="cvv"
+                type="text"
+                class="form-control"
+                aria-label="cvv"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">€</span>
+              <input
+                name="euro"
+                type="number"
+                class="form-control"
+                aria-label="Amount"
+              />
+              <span class="input-group-text">.00</span>
+            </div>
+            <button
+              onClick="conto()"
+              class="btn btn-success mr-2"
+              type="submit"
+              name="donazione"
+              value="<%= project.id %> "
+            >
+              Dona ora
+            </button>
+          </form>
         </div>
       </div>
 
@@ -100,7 +187,7 @@
             <div class="btn-modal mr-3">
               <% if(user && user.username==project.author_name) {%>
               <button
-                class="btn btn-success"
+                class="btn btn-primary"
                 data-toggle="modal"
                 data-target="#new-document"
               >
@@ -168,7 +255,7 @@
 
             <%if(user) {%>
             <button
-              class="btn btn-primary"
+              class="btn btn-primary mt-2 mb-2"
               type="submit"
               name="projectId"
               value="<%= project.id %> "
@@ -198,6 +285,16 @@
             >
               Modifica
             </button>
+            <form action="/deleteComment" method="POST">
+              <button
+                name="id_commento"
+                value="<%=comment.id%>"
+                type="submit"
+                class="btn btn-danger"
+              >
+                Elimina
+              </button>
+            </form>
             <% } %>
           </div>
           <% }); %> <% } %>

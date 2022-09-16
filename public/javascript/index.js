@@ -120,5 +120,11 @@ function Email() {
     location.href =
       "mailto:" + email + "?Subject=" + oggetto + "&Body=" + messaggio;
   }
-  console.log("Provaaaa");
+}
+
+function conto() {
+  var c = document.getElementById("numCarta").value;
+  console.log(c.length);
+
+  return c.length === 16;
 }

@@ -25,3 +25,19 @@
 #icone {
   margin: 3rem;
 }
+
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: black;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.b {
+  color: black;
+}

@@ -17,15 +17,6 @@ const upload = multer({
 });
 const router = express.Router();
 
-/*
-function fetchProjects(req, res, next) {
-  db.all("SELECT * FROM projects", function (err, items) {
-    res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
-    next();
-  });
-}
-*/
-
 function fetchProjects(req, res, next) {
   db.all("SELECT * FROM projects", function (err, items) {
     res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
@@ -138,22 +129,10 @@ router.post("/createComment", function (req, res, next) {
   );
 });
 
-//ottengo tutti i progetti nel db di quell'utente loggato
+//ottengo tutti i progetti
 router.get("/", fetchProjects);
 
-router.get(
-  "/creatore",
-  /*
-  function (req, res, next) {
-    //se l'utente non è loggato
-    if (!req.session.passport.user) {
-      return res.render("/login");
-    }
-    next();
-  },
-  */
-  fetchProjects
-);
+router.get("/creatore", fetchProjects);
 
 router.get(
   "/project-details/:id",
@@ -164,7 +143,7 @@ router.get(
   documentRoute.fetchFollowDocById
 );
 
-//modifica progetto non va per l'immagine
+//modifica progetto
 router.post(
   "/modifica",
   upload.single("image"),
@@ -184,44 +163,6 @@ router.post(
   }
 );
 
-/*
-//oppure così
-router.post(
-  "/modifica/:id)",
-  function (req, res, next) {
-    db.run(
-      "DELETE FROM projects WHERE id = ? AND owner_id = ?",
-      [req.params.id, req.user.id],
-      function (err) {
-        if (err) {
-          return next(err);
-        }
-        return res.redirect("/" + (req.body.filter || ""));
-      }
-    );
-  },
-  function (req, res, next) {
-    db.run(
-      "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ? AND owner_id = ?",
-      [
-        req.body.title,
-        req.body.description,
-        req.body.category,
-        req.body.image,
-        req.params.id,
-        req.user.id,
-      ],
-      function (err) {
-        if (err) {
-          return next(err);
-        }
-        return res.redirect("/" + (req.body.filter || ""));
-      }
-    );
-  }
-);
-*/
-
 router.post("/search", fetchProjects, async function (req, res, next) {
   const searchValue =
     req.body.searchValue && req.body.searchValue.toLowerCase();
@@ -236,6 +177,7 @@ router.post("/search", fetchProjects, async function (req, res, next) {
   res.json(res.locals.projects);
 });
 
+//aggiungi progetto ai preferiti
 router.post("/addFollow", function (req, res, next) {
   const id_project = req.body.projectId;
   db.run(
@@ -251,6 +193,7 @@ router.post("/addFollow", function (req, res, next) {
   );
 });
 
+//rimuovi progetto dai preferiti
 router.post("/removeFollow", function (req, res, next) {
   const id_project = req.body.projectId;
 
@@ -294,6 +237,48 @@ router.post("/updateComment", function (req, res, next) {
       return res.redirect(req.get("referer"));
     }
   );
+});
+
+//donazione
+router.post("/donation", function (req, res, next) {
+  //const projectId = req.params.id;
+  //const id_project = req.body.projectId;
+  const idProg = req.body.donazione; // donazione è il name nel form per donare
+  //const num = req.body.numero;
+  console.log("id_project", idProg);
+
+  db.run(
+    "INSERT INTO donations (user_id,id_project,cifra) VALUES (?,?,?)",
+    [req.session.passport.user.id, idProg, req.body.euro],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+    }
+  );
+
+  db.run(
+    "UPDATE projects SET donations_total=donations_total+? WHERE id = ?",
+    [req.body.euro, idProg],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
+//elimina commento
+router.post("/deleteComment", function (req, res, next) {
+  const id = req.body.id_commento;
+
+  db.run("DELETE FROM documents_comments WHERE id = ?", [id], function (err) {
+    if (err) {
+      return next(err);
+    }
+    return res.redirect(req.get("referer"));
+  });
 });
 
 module.exports = router;
