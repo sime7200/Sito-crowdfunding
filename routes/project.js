@@ -170,7 +170,8 @@ router.post("/search", fetchProjects, async function (req, res, next) {
   res.locals.projects = res.locals.projects.filter(function (project) {
     return (
       project.title.toLowerCase().includes(searchValue) ||
-      project.category.toLowerCase().includes(searchValue)
+      project.category.toLowerCase().includes(searchValue) ||
+      project.description.toLowerCase().includes(searchValue)
     );
   });
 

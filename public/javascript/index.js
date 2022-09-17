@@ -50,6 +50,7 @@ async function searchProject(reset) {
             <td>${project.description}</td>
             <td>${project.category}</td>
             <td>${project.author_name}</td>
+            <td>${project.donations_total}</td>
           </tr>`;
       })
       .join("");

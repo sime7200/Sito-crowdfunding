@@ -31,7 +31,7 @@ router.post("/signup", function (req, res, next) {
         [req.body.username, req.body.role, hashedPassword, salt],
         function (err) {
           if (err) {
-            return next(err);
+            res.status(200).render("login", { successSignup: false });
           }
           var user = {
             id: this.lastID,

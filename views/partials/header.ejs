@@ -4,32 +4,37 @@
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#navbarTogglerDemo01"
-      aria-controls="navbarTogglerDemo01"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <div class="collapse navbar-collapse" id="navbarNav">
       <a href="/"
         ><img
           src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo-black.svg"
           width="110"
           height="90"
       /></a>
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="nav-links">
-        <li>
-          <a href="/mission">Mission</a>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/mission"
+            >Mission</a
+          >
         </li>
-        <li>
-          <a href="/contatti">Contatti</a>
+        <li class="nav-item">
+          <a class="nav-link" href="/contatti">Contatti</a>
         </li>
       </ul>
+
       <!--se sei loggato-->
       <% if(!(user)){ %>
       <form action="/login" method="get">
-        <button class="login btn btn-primary" type="submit">LOGIN</button>
+        <button id="btn-navbar" class="login btn btn-primary" type="submit">
+          LOGIN
+        </button>
       </form>
 
       <!--se non sei loggato-->
@@ -37,6 +42,7 @@
 
       <div class="btn-group dropstart">
         <button
+          id="btn-navbar"
           type="button"
           class="btn btn-secondary dropdown-toggle"
           data-bs-toggle="dropdown"
@@ -54,16 +60,6 @@
           </li>
         </ul>
       </div>
-
-      <!--
-          <li><a class="dropdown-item" href="#">LOGOUT</a></li>
-        </ul>
-      </div>
-
-      <form action="/logout" method="post">
-        <button class="logout btn btn-primary" type="submit">LOGOUT</button>
-      </form>
-      -->
       <% } %>
     </div>
   </div>

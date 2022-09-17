@@ -5,6 +5,7 @@
     <%- include('partials/head');%>
   </head>
 
+
   <body>
     <!--Inizio navbar-->
     <%- include('partials/header');%>
@@ -14,7 +15,6 @@
       <div class="row row-titolo-contatti">
         <h1 id="titolo-contatti">Raggiungici</h1>
       </div>
-
       <div class="row">
         <div class="col google-maps text-left">
           <iframe
@@ -48,20 +48,25 @@
         </div>
       </div>
     </div>
-
+  
     <div class="container-mail">
       <h1 id="titolo-contatti">Contattaci</h1>
-
       <form name="modulo">
-        <strong> Email:</strong><br />
+        <strong> Email da parte di:</strong><br>
         <input type="text" name="email" />
-        <br />
-        <strong>Oggetto:</strong><br />
-        <input type="text" name="oggetto" /> <br />
-        <strong>Messaggio:</strong><br />
-        <textarea name="messaggio" rows="10" cols="100"></textarea> <br />
+        <br>
+        <strong> Email a:</strong><br>
+        <label type="text" name="email" readonly="readonly">prova@email.it
+        <br>
+        <strong>Oggetto:</strong><br>
+        <input type="text" name="oggetto" /> <br>
+        <strong>Messaggio:</strong><br>
+        <textarea name="messaggio" rows="10" cols="100"></textarea> <br>
+        <%if(!user) {%>
+          <h3>Prima di inviare una mail esegui il login</h3>
+        <%}%>
         <%if(user) {%>
-        <input type="button" value="Invia" onClick="Email()" />
+        <input class="btn btn-success" type="button" value="Invia" onClick="Email()" />
         <%}%>
       </form>
     </div>

@@ -348,6 +348,7 @@
       </div>
       <%}%>
 
+      <!--commenti-->
       <div class="row-commenti">
         <% if(comments) {%>
         <h2>Commenti</h2>
@@ -378,34 +379,36 @@
         <% }; %> <% if(comments) {%>
         <div class="list-group">
           <% comments.forEach(comment => { %>
-          <div class="single-comment">
-            <div class="">
+          <div class="single-comment col-12">
+            <div class="infoCommento">
               <small><strong><%= comment.user_name %></strong></small> -
               <small><%= comment.creation_date %></small>
             </div>
 
             <p class="mb-1"><%= comment.description %></p>
-            <% if(user && user.id === comment.user_id) {%>
-            <button
-              onclick="onOpenUpdateCommentModal('<%=comment.description%>', '<%=comment.id%>')"
-              type="button"
-              data-target="#update-comment"
-              data-toggle="modal"
-              class="btn btn-secondary"
-            >
-              Modifica
-            </button>
-            <form action="/deleteComment" method="POST">
+            <div class="row justify-content-end mr-3">
+              <% if(user && user.id === comment.user_id) {%>
               <button
-                name="id_commento"
-                value="<%=comment.id%>"
-                type="submit"
-                class="btn btn-danger"
+                onclick="onOpenUpdateCommentModal('<%=comment.description%>', '<%=comment.id%>')"
+                type="button"
+                data-target="#update-comment"
+                data-toggle="modal"
+                class="btn btn-secondary mr-1"
               >
-                Elimina
+                Modifica
               </button>
-            </form>
-            <% } %>
+              <form action="/deleteComment" method="POST">
+                <button
+                  name="id_commento"
+                  value="<%=comment.id%>"
+                  type="submit"
+                  class="btn btn-danger"
+                >
+                  Elimina
+                </button>
+              </form>
+              <% } %>
+            </div>
           </div>
           <% }); %> <% } %>
         </div>
