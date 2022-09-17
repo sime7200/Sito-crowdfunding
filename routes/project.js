@@ -241,10 +241,7 @@ router.post("/updateComment", function (req, res, next) {
 
 //donazione
 router.post("/donation", function (req, res, next) {
-  //const projectId = req.params.id;
-  //const id_project = req.body.projectId;
   const idProg = req.body.donazione; // donazione è il name nel form per donare
-  //const num = req.body.numero;
   console.log("id_project", idProg);
 
   db.run(

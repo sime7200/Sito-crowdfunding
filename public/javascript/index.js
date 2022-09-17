@@ -121,10 +121,3 @@ function Email() {
       "mailto:" + email + "?Subject=" + oggetto + "&Body=" + messaggio;
   }
 }
-
-function conto() {
-  var c = document.getElementById("numCarta").value;
-  console.log(c.length);
-
-  return c.length === 16;
-}

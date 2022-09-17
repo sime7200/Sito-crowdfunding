@@ -100,9 +100,10 @@
       </div>
 
       <!--donazioni progetto-->
-      <div class="container mt-4">
-        <h2>Inserisci i dati per la donazione</h2>
-        <div class="row row-carta">
+      <%if(user) {%>
+      <div class="row row-carta mt-4">
+        <div class="col-12">
+          <h2>Inserisci i dati per la donazione</h2>
           <form action="/donation" method="POST">
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1">Name</span>
@@ -112,6 +113,8 @@
                 class="form-control"
                 aria-label="name"
                 aria-describedby="basic-addon1"
+                pattern="^[A-Z]{0,}[a-z]{0,}"
+                title="Inserire il nome sulla carta"
               />
             </div>
             <div class="input-group mb-3">
@@ -122,18 +125,20 @@
                 class="form-control"
                 aria-label="surname"
                 aria-describedby="basic-addon1"
+                pattern="^[A-Z]{0,}[a-z]{0,}"
+                title="Inserire il cognome sulla carta"
               />
             </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">Tipo carta</span>
-              <input
-                name="tipo"
-                type="text"
-                class="form-control"
-                aria-label="tipo"
-                aria-describedby="basic-addon1"
-              />
+
+            <div class="form-group">
+              <label for="documento">Inserisci il tipo della carta</label>
+              <select class="form-control" name="documento">
+                <option>Seleziona</option>
+                <option>Paypal</option>
+                <option>Carta di credito</option>
+              </select>
             </div>
+
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1"
                 >Numero carta</span
@@ -145,6 +150,11 @@
                 class="form-control"
                 aria-label="numeroCarta"
                 aria-describedby="basic-addon1"
+                required
+                maxlength="16"
+                minlength="16"
+                pattern="^[0-9]{1,16}"
+                title="Inserire il numero della carta senza lettere"
               />
             </div>
             <div class="input-group mb-3">
@@ -155,6 +165,10 @@
                 class="form-control"
                 aria-label="cvv"
                 aria-describedby="basic-addon1"
+                maxlength="3"
+                minlength="3"
+                pattern="^[0-9]{1,16}"
+                title="Inserire il numero CVV dietro la carta"
               />
             </div>
             <div class="input-group mb-3">
@@ -168,7 +182,6 @@
               <span class="input-group-text">.00</span>
             </div>
             <button
-              onClick="conto()"
               class="btn btn-success mr-2"
               type="submit"
               name="donazione"
@@ -179,6 +192,7 @@
           </form>
         </div>
       </div>
+      <%}%>
 
       <div class="row-doc">
         <div class="row doc-container">
@@ -237,6 +251,102 @@
         </table>
         <% }; %>
       </div>
+
+      <%if(user) {%>
+      <div class="row row-acquisto mt-4">
+        <div class="col-12">
+          <form>
+            <!--<div class="input-group mb-3">-->
+            <div class="form-group">
+              <label for="documento"
+                >Scegli e inserisci i dati per acquistare un documento</label
+              >
+              <select class="form-control" name="documento">
+                <option>Seleziona un documento</option>
+                <%documents.forEach(doc => {%>
+                <option><%=doc.title%></option>
+                <%});%>
+              </select>
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Name</span>
+              <input
+                name="name"
+                type="text"
+                class="form-control"
+                aria-label="name"
+                aria-describedby="basic-addon1"
+                pattern="^[A-Z]{0,}[a-z]{0,}"
+                title="Inserire il nome sulla carta"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Surname</span>
+              <input
+                name="surname"
+                type="text"
+                class="form-control"
+                aria-label="surname"
+                aria-describedby="basic-addon1"
+                pattern="^[A-Z]{0,}[a-z]{0,}"
+                title="Inserire il cognome sulla carta"
+              />
+            </div>
+            <div class="form-group">
+              <label for="documento">Inserisci il tipo della carta</label>
+              <select class="form-control" name="documento">
+                <option>Seleziona</option>
+                <option>Paypal</option>
+                <option>Carta di credito</option>
+              </select>
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"
+                >Numero carta</span
+              >
+              <input
+                id="numCarta"
+                name="numeroCarta"
+                type="text"
+                class="form-control"
+                aria-label="numeroCarta"
+                aria-describedby="basic-addon1"
+                required
+                maxlength="16"
+                minlength="16"
+                pattern="^[0-9]{1,16}"
+                title="Inserire il numero della carta senza lettere"
+              />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">CVV</span>
+              <input
+                name="cvv"
+                type="text"
+                class="form-control"
+                aria-label="cvv"
+                aria-describedby="basic-addon1"
+                maxlength="3"
+                minlength="3"
+                pattern="^[0-9]{1,16}"
+                title="Inserire il numero CVV dietro la carta"
+              />
+            </div>
+
+            <button
+              class="btn btn-success mr-2"
+              type="submit"
+              name="donazione"
+              value="<%= project.id %> "
+            >
+              Compra documento
+            </button>
+          </form>
+        </div>
+      </div>
+      <%}%>
 
       <div class="row-commenti">
         <% if(comments) {%>
