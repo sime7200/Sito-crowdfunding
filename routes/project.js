@@ -66,7 +66,7 @@ function fetchCommentsById(req, res, next) {
   const projectId = req.params.id;
 
   db.all(
-    "SELECT * FROM documents_comments WHERE project_id=?",
+    "SELECT * FROM documents_comments WHERE project_id=? ORDER BY creation_date DESC",
     [projectId],
     function (err, comments) {
       res.locals.comments = comments;
@@ -243,7 +243,6 @@ router.post("/updateComment", function (req, res, next) {
 //donazione
 router.post("/donation", function (req, res, next) {
   const idProg = req.body.donazione; // donazione è il name nel form per donare
-  console.log("id_project", idProg);
 
   db.run(
     "INSERT INTO donations (user_id,id_project,cifra) VALUES (?,?,?)",

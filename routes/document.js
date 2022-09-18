@@ -24,10 +24,11 @@ router.post("/newDocument", function (req, res, next) {
   );
 });
 
+//prende tutti i documenti
 function fetchDocuments(req, res, next) {
   const projectId = req.params.id;
   db.all(
-    "SELECT * FROM documents WHERE project_id=?",
+    "SELECT * FROM documents WHERE project_id=? ORDER BY date DESC",
     [projectId],
     function (err, items) {
       res.locals.documents = items; //documents è il nome di una variabile che ho appena creato
@@ -36,6 +37,7 @@ function fetchDocuments(req, res, next) {
   );
 }
 
+//prende i documenti di un determinato utente in base all'id
 function fetchFollowDocById(req, res, next) {
   const userId =
     req.session &&

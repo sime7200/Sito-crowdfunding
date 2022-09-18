@@ -74,22 +74,22 @@ db.serialize(function () {
   )"
   );
 
-  // create an initial user (username: alice, password: letmein)
+  // create user (username: Maria, password: 1234)
   var salt = crypto.randomBytes(16);
   db.run(
     "INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)",
     [
-      "alice",
-      "Creatore",
-      crypto.pbkdf2Sync("letmein", salt, 310000, 32, "sha256"),
+      "Maria",
+      "Finanziatore",
+      crypto.pbkdf2Sync("1234", salt, 310000, 32, "sha256"),
       salt,
     ]
   );
-  // create an user (username: luca, password: ciao)
+  // create user (username: Luca, password: ciao)
   db.run(
     "INSERT OR IGNORE INTO users (username, role, hashed_password, salt) VALUES (?, ?, ?, ?)",
     [
-      "luca",
+      "Luca",
       "Creatore",
       crypto.pbkdf2Sync("ciao", salt, 310000, 32, "sha256"),
       salt,

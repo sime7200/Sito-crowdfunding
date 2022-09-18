@@ -18,6 +18,7 @@
 /* Inizio pagina Mission*/
 
 .carousel-item {
+  background-size: cover;
   background-blend-mode: multiply;
   max-height: 35rem;
 }

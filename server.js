@@ -120,7 +120,7 @@ app.get("/profilo", function (req, res) {
 });
 
 app.use(passport.session());
-//api logout
+//logout
 app.get("/logout", function (req, res) {
   req.logout();
   res.render("index");
