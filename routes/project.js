@@ -40,6 +40,20 @@ function fetchProjectsById(req, res, next) {
     }
   );
 }
+
+//seleziona i progetti di un certo utente
+function fetchProjectsByUser(req, res, next) {
+  db.all(
+    "SELECT * FROM projects WHERE id=?",
+    [req.session.passport.user.id],
+    function (err, items) {
+      res.locals.projectsUser = items;
+
+      next();
+    }
+  );
+}
+
 function fetchFollowById(req, res, next) {
   const projectId = req.params.id;
   const userId =
@@ -107,6 +121,38 @@ router.post(
   }
 );
 
+//modifica progetto
+router.post(
+  "/modifica",
+  upload.single("image"),
+  async function (req, res, next) {
+    const filename = "/uploads/" + req.file.filename;
+    const id = req.body.id_prog;
+    db.run(
+      "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
+      [req.body.title, req.body.description, req.body.category, filename, id],
+      function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.status(200).redirect("/" + (req.body.filter || ""));
+      }
+    );
+  }
+);
+
+//elimina progetto
+router.post("/deleteProject", function (req, res, next) {
+  const id = req.body.deleteProjectId;
+
+  db.run("DELETE FROM projects WHERE id = ?", [id], function (err) {
+    if (err) {
+      return next(err);
+    }
+    return res.redirect("/" + (req.body.filter || ""));
+  });
+});
+
 // Creazione nuovo commento
 router.post("/createComment", function (req, res, next) {
   const projectId = req.body.projectId;
@@ -138,30 +184,13 @@ router.get(
   "/project-details/:id",
   fetchProjectsById,
   fetchFollowById,
+  fetchDonatori,
   fetchCommentsById,
   documentRoute.fetchDocuments,
   documentRoute.fetchFollowDocById
 );
 
-//modifica progetto
-router.post(
-  "/modifica",
-  upload.single("image"),
-  async function (req, res, next) {
-    const filename = "/uploads/" + req.file.filename;
-    const id = req.body.id_prog;
-    db.run(
-      "UPDATE projects SET title = ?, description = ?, category = ?, image = ? WHERE id = ?",
-      [req.body.title, req.body.description, req.body.category, filename, id],
-      function (err) {
-        if (err) {
-          return next(err);
-        }
-        return res.status(200).redirect("/" + (req.body.filter || ""));
-      }
-    );
-  }
-);
+router.get("/profilo", fetchProjectsByUser);
 
 router.post("/search", fetchProjects, async function (req, res, next) {
   const searchValue =
@@ -211,18 +240,6 @@ router.post("/removeFollow", function (req, res, next) {
   );
 });
 
-//elimina progetto
-router.post("/deleteProject", function (req, res, next) {
-  const id = req.body.deleteProjectId;
-
-  db.run("DELETE FROM projects WHERE id = ?", [id], function (err) {
-    if (err) {
-      return next(err);
-    }
-    return res.redirect("/" + (req.body.filter || ""));
-  });
-});
-
 //modifica commento
 router.post("/updateComment", function (req, res, next) {
   const description = req.body.description;
@@ -245,8 +262,13 @@ router.post("/donation", function (req, res, next) {
   const idProg = req.body.donazione; // donazione è il name nel form per donare
 
   db.run(
-    "INSERT INTO donations (user_id,id_project,cifra) VALUES (?,?,?)",
-    [req.session.passport.user.id, idProg, req.body.euro],
+    "INSERT INTO donations (user_id,donatore,id_project,cifra) VALUES (?,?,?,?)",
+    [
+      req.session.passport.user.id,
+      req.session.passport.user.username,
+      idProg,
+      req.body.euro,
+    ],
     function (err) {
       if (err) {
         return next(err);
@@ -277,5 +299,33 @@ router.post("/deleteComment", function (req, res, next) {
     return res.redirect(req.get("referer"));
   });
 });
+
+function fetchDonatori(req, res, next) {
+  const projectId = req.params.id;
+
+  db.all(
+    "SELECT * FROM donations WHERE id_project=? ",
+    [projectId],
+    function (err, items) {
+      res.locals.elencoDonatori = items;
+
+      next();
+    }
+  );
+}
+
+function fetchCommentsById(req, res, next) {
+  const projectId = req.params.id;
+
+  db.all(
+    "SELECT * FROM documents_comments WHERE project_id=? ORDER BY creation_date DESC",
+    [projectId],
+    function (err, comments) {
+      res.locals.comments = comments;
+
+      next();
+    }
+  );
+}
 
 module.exports = router;

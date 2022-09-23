@@ -96,13 +96,12 @@ app.use("/", documentRoute.router);
 
 // index page
 app.get("/", function (req, res, next) {
-  //se l'utente non è loggato
   return res.render("index", { user: req.user });
 });
 
 // login page
 app.get("/login", function (req, res) {
-  res.render("login"); //non specifico l'estensione
+  res.render("login");
 });
 
 //mission page

@@ -95,6 +95,13 @@
               <h4>Donazioni su questo progetto</h4>
               <p><%= project.donations_total%> Euro</p>
             </div>
+            <div class="donatori">
+              <h4>Elenco donatori su questo progetto</h4>
+              <p>
+                <% elencoDonatori.forEach(element => { %> <%= element.donatore%>
+                <%});%>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -178,6 +185,7 @@
                 type="number"
                 class="form-control"
                 aria-label="Amount"
+                min="1"
               />
               <span class="input-group-text">.00</span>
             </div>
@@ -206,6 +214,13 @@
                 data-target="#new-document"
               >
                 Aggiungi documento
+              </button>
+              <button
+                class="btn btn-secondary ml-1"
+                data-toggle="modal"
+                data-target="#update-document"
+              >
+                Modifica documento
               </button>
               <%}%>
             </div>
@@ -348,6 +363,195 @@
       </div>
       <%}%>
 
+      <!--Modale aggiungi documento-->
+      <div class="modal fade" id="new-document" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Aggiungi un nuovo documento</h5>
+              <button
+                type="button"
+                class="close"
+                id="close-modal"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form role="form" method="POST" action="/newDocument">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="author">Autore</label>
+
+                  <input
+                    type="text"
+                    name="author"
+                    class="form-control"
+                    value="<%= project.author_name %>"
+                    defaultValue="<%= project.author_name %>"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="title"
+                    >Titolo (non vengono accettati titoli già presenti)</label
+                  >
+                  <input type="text" name="title" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Descrizione</label>
+                  <input type="text" name="description" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label for="date">Data</label>
+                  <input type="date" name="date" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label for="type">Prezzo</label>
+                  <input
+                    type="number"
+                    name="type"
+                    class="form-control"
+                    min="0"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <input
+                    hidden
+                    type="number"
+                    name="project_id"
+                    value="<%= project.id%>"
+                    class="form-control"
+                  />
+                </div>
+                <div class="modal-footer">
+                  <div class="form-group">
+                    <div>
+                      <button class="btn btn-success">Salva</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!--Modale modifica documento-->
+      <div class="modal fade" id="update-document" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modifica documento</h5>
+              <button
+                type="button"
+                class="close"
+                id="close-modal"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form role="form" method="POST" action="/updateDocument">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="selezionaDoc"
+                    >Seleziona il documento da modificare</label
+                  >
+                  <select class="form-control" name="selezionaDoc">
+                    <option>Seleziona</option>
+                    <% documents.forEach(doc => { %>
+                    <option><%=doc.title%></option>
+                    <%});%>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="author">Autore</label>
+                  <input
+                    type="text"
+                    name="author"
+                    class="form-control"
+                    value="<%= documents.author %>"
+                    defaultValue="<%= documents.author %>"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="title"
+                    >Titolo (non vengono accettati titoli già presenti)</label
+                  >
+                  <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    value="<%= documents.title %>"
+                    defaultValue="<%= documents.title %>"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Descrizione</label>
+                  <input
+                    type="text"
+                    name="description"
+                    class="form-control"
+                    value="<%= documents.description %>"
+                    defaultValue="<%= documents.description %>"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="date">Data</label>
+                  <input
+                    type="date"
+                    name="date"
+                    class="form-control"
+                    value="<%= documents.date %>"
+                    defaultValue="<%= documents.date %>"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="type">Prezzo</label>
+                  <input
+                    type="number"
+                    name="type"
+                    class="form-control"
+                    min="0"
+                    value="<%= documents.type %>"
+                    defaultValue="<%= documents.type %>"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <input
+                    hidden
+                    type="number"
+                    name="project_id"
+                    value="<%= project.id%>"
+                    class="form-control"
+                  />
+                </div>
+                <div class="modal-footer">
+                  <div class="form-group">
+                    <div>
+                      <button class="btn btn-success">Salva modifica</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!--commenti-->
       <div class="row-commenti">
         <% if(comments) {%>
@@ -415,7 +619,7 @@
       </div>
     </div>
 
-    <!--Modale aggiungi documento-->
+    <!--Modale modifica commento-->
     <div class="modal fade" id="update-comment" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -453,78 +657,6 @@
                 />
               </div>
 
-              <div class="modal-footer">
-                <div class="form-group">
-                  <div>
-                    <button class="btn btn-success">Salva</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!--Modale aggiungi documento-->
-    <div class="modal fade" id="new-document" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Aggiungi un nuovo documento</h5>
-            <button
-              type="button"
-              class="close"
-              id="close-modal"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form role="form" method="POST" action="/newDocument">
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="author">Autore</label>
-
-                <input
-                  type="text"
-                  name="author"
-                  class="form-control"
-                  value="<%= project.author_name %>"
-                  defaultValue="<%= project.author_name %>"
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="title">Titolo</label>
-                <input type="text" name="title" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="description">Descrizione</label>
-                <input type="text" name="description" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="date">Data</label>
-                <input type="date" name="date" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <label for="type">Prezzo</label>
-                <input type="number" name="type" class="form-control" />
-              </div>
-
-              <div class="form-group">
-                <input
-                  hidden
-                  type="number"
-                  name="project_id"
-                  value="<%= project.id%>"
-                  class="form-control"
-                />
-              </div>
               <div class="modal-footer">
                 <div class="form-group">
                   <div>

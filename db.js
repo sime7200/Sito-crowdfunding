@@ -30,6 +30,7 @@ db.serialize(function () {
   db.run(
     "CREATE TABLE IF NOT EXISTS donations ( \
     id_donation INTEGER PRIMARY KEY, \
+    donatore TEXT NOT NULL, \
     user_id INTEGER NOT NULL, \
     id_project INTEGER NOT NULL, \
     cifra INTEGER NOT NULL \
@@ -39,7 +40,7 @@ db.serialize(function () {
     "CREATE TABLE IF NOT EXISTS documents ( \
     id INTEGER PRIMARY KEY, \
     author TEXT NOT NULL, \
-    title TEXT NOT NULL, \
+    title TEXT UNIQUE NOT NULL, \
     description TEXT NOT NULL, \
     date DATE NOT NULL, \
     type NUMERIC NOT NULL, \

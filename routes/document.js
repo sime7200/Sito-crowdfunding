@@ -24,6 +24,43 @@ router.post("/newDocument", function (req, res, next) {
   );
 });
 
+//modifica documento
+router.post("/updateDocument", function (req, res, next) {
+  db.run(
+    "UPDATE documents SET author=?, title=?, description=?, date=?, type=? WHERE title=? ",
+    [
+      req.body.author,
+      req.body.title,
+      req.body.description,
+      req.body.date,
+      req.body.type,
+      req.body.selezionaDoc,
+    ],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
+router.post("/updateComment", function (req, res, next) {
+  const description = req.body.description;
+  const comment_id = req.body.comment_id;
+
+  db.run(
+    "UPDATE documents_comments SET description=? WHERE id = ?",
+    [description, comment_id],
+    function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect(req.get("referer"));
+    }
+  );
+});
+
 //prende tutti i documenti
 function fetchDocuments(req, res, next) {
   const projectId = req.params.id;

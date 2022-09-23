@@ -34,7 +34,40 @@
       </div>
     </div>
 
-    <%- include('partials/footer.ejs');%>
+    <!--tabella progetti propri-->
+    <%if(user && user.role=="Creatore") {%>
+    <div class="container mt-3">
+      <div id="elenco-progetti" class="row">
+        <div class="col-12 mx-auto">
+          <h1 class="text-center">I tuoi progetti</h1>
+          <table id="project-table" class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Titolo</th>
+                <th scope="col">Descrizione</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Autore</th>
+                <th scope="col">Donazioni (€)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% projectsUser.forEach(element => { %>
+              <tr>
+                <td><%=element.id%></td>
+                <td><%=element.title%></td>
+                <td><%=element.description%></td>
+                <td><%=element.category%></td>
+                <td><%=element.author_name%></td>
+                <td><%=element.donations_total%></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <%}%> <%- include('partials/footer.ejs');%>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
