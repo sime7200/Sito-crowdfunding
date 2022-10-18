@@ -20,10 +20,14 @@ addOnClickRow();
 
 async function searchProject(reset) {
   const value = document.getElementById("searchValue").value;
-  const projectCheckbox = document.getElementsByName("progetto-checkbox")[0];
-  const documentCheckbox = document.getElementsByName("documento-checkbox")[0];
+  const value2 = document.getElementById("categoriaSel").value;
 
-  if (reset) searchValue.value = "";
+  //const projectCheckbox = document.getElementsByName("progetto-checkbox")[0];
+  //const documentCheckbox = document.getElementsByName("documento-checkbox")[0];
+
+  if (reset) {
+    (searchValue.value = ""), (categoriaSel.value = "");
+  }
 
   try {
     let response = await fetch("/search", {
@@ -33,9 +37,10 @@ async function searchProject(reset) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        categoriaSel: value2,
         searchValue: reset ? "" : value,
-        checkInProjet: projectCheckbox.checked,
-        checkInDocument: documentCheckbox.checked,
+        //checkInProjet: projectCheckbox.checked,
+        //checkInDocument: documentCheckbox.checked,
       }),
     });
     let data = await response.json();

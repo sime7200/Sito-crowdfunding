@@ -48,6 +48,25 @@
 
       <div class="d-flex">
         <input
+          id="categoriaSel"
+          class="form-control me-2 mr-2"
+          type="text"
+          list="cat_list"
+          name="categoriaSel"
+          placeholder="Selezionare categoria"
+          value="<%= categoriaSel %>"
+        />
+        <datalist id="cat_list">
+          <option>Tutti</option>
+          <option>Tecnologia</option>
+          <option>Cucina</option>
+          <option>Animali</option>
+          <option>Arredamento</option>
+          <option>Sport</option>
+          <option>Natura</option>
+          <option>Politica</option>
+        </datalist>
+        <input
           id="searchValue"
           class="form-control me-2 mr-2"
           type="search"
@@ -61,16 +80,6 @@
         <button class="btn btn-outline-primary" onclick="searchProject(true)">
           Reset
         </button>
-      </div>
-      <div class="d-flex my-2">
-        <div class="mr-3">
-          <label for="type">Progetto</label>
-          <input type="checkbox" name="progetto-checkbox" />
-        </div>
-        <div class="mr-3">
-          <label for="type">Documento</label>
-          <input type="checkbox" name="documento-checkbox" />
-        </div>
       </div>
     </div>
 

@@ -21,6 +21,8 @@ function fetchProjects(req, res, next) {
   db.all("SELECT * FROM projects", function (err, items) {
     res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
     res.locals.searchValue = "";
+    res.locals.searchCategory = "";
+    res.locals.categoriaSel = "";
 
     next();
   });
@@ -39,6 +41,34 @@ function fetchProjectsById(req, res, next) {
       next();
     }
   );
+}
+
+function fetchProjectsByCategory(req, res, next) {
+  if (req.body.categoriaSel == "Tutti") {
+    db.all(
+      "SELECT * FROM projects",
+      [req.body.categoriaSel],
+      function (err, items) {
+        res.locals.projects = items;
+        res.locals.searchValue = "";
+        res.locals.searchCategory = "";
+        res.locals.categoriaSel = "";
+        next();
+      }
+    );
+  } else {
+    db.all(
+      "SELECT * FROM projects WHERE category=?",
+      [req.body.categoriaSel],
+      function (err, items) {
+        res.locals.projects = items;
+        res.locals.searchValue = "";
+        res.locals.searchCategory = "";
+        res.locals.categoriaSel = "";
+        next();
+      }
+    );
+  }
 }
 
 //seleziona i progetti di un certo utente
@@ -176,7 +206,7 @@ router.post("/createComment", function (req, res, next) {
 });
 
 //ottengo tutti i progetti
-router.get("/", fetchProjects);
+router.get("/", fetchProjects, fetchProjectsByCategory);
 
 router.get("/creatore", fetchProjects);
 
@@ -192,20 +222,25 @@ router.get(
 
 router.get("/profilo", fetchProjectsByUser);
 
-router.post("/search", fetchProjects, async function (req, res, next) {
-  const searchValue =
-    req.body.searchValue && req.body.searchValue.toLowerCase();
+router.post(
+  "/search",
+  fetchProjectsByCategory,
+  async function (req, res, next) {
+    const searchValue =
+      req.body.searchValue && req.body.searchValue.toLowerCase();
+    req.body.categoriaSel && req.body.categoriaSel.toLowerCase();
 
-  res.locals.projects = res.locals.projects.filter(function (project) {
-    return (
-      project.title.toLowerCase().includes(searchValue) ||
-      project.category.toLowerCase().includes(searchValue) ||
-      project.description.toLowerCase().includes(searchValue)
-    );
-  });
+    res.locals.projects = res.locals.projects.filter(function (project) {
+      return (
+        project.title.toLowerCase().includes(searchValue) ||
+        project.category.toLowerCase().includes(searchValue) ||
+        project.description.toLowerCase().includes(searchValue)
+      );
+    });
 
-  res.json(res.locals.projects);
-});
+    res.json(res.locals.projects);
+  }
+);
 
 //aggiungi progetto ai preferiti
 router.post("/addFollow", function (req, res, next) {
