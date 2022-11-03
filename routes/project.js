@@ -44,9 +44,9 @@ function fetchProjectsById(req, res, next) {
 }
 
 function fetchProjectsByCategory(req, res, next) {
-  if (req.body.categoriaSel == "Tutti") {
+  if (req.body.categoriaSel != "Tutti") {
     db.all(
-      "SELECT * FROM projects",
+      "SELECT * FROM projects  WHERE category=?",
       [req.body.categoriaSel],
       function (err, items) {
         res.locals.projects = items;
@@ -57,17 +57,13 @@ function fetchProjectsByCategory(req, res, next) {
       }
     );
   } else {
-    db.all(
-      "SELECT * FROM projects WHERE category=?",
-      [req.body.categoriaSel],
-      function (err, items) {
-        res.locals.projects = items;
-        res.locals.searchValue = "";
-        res.locals.searchCategory = "";
-        res.locals.categoriaSel = "";
-        next();
-      }
-    );
+    db.all("SELECT * FROM projects", function (err, items) {
+      res.locals.projects = items;
+      res.locals.searchValue = "";
+      res.locals.searchCategory = "";
+      res.locals.categoriaSel = "";
+      next();
+    });
   }
 }
 
