@@ -19,7 +19,7 @@ const router = express.Router();
 
 function fetchProjects(req, res, next) {
   db.all("SELECT * FROM projects", function (err, items) {
-    res.locals.projects = items; //projects è il nome di una variabile che ho appena creato
+    res.locals.projects = items;
     res.locals.searchValue = "";
     res.locals.searchCategory = "";
     res.locals.categoriaSel = "";
@@ -74,7 +74,7 @@ function fetchProjectsByCategory(req, res, next) {
 //seleziona i progetti di un certo utente
 function fetchProjectsByUser(req, res, next) {
   db.all(
-    "SELECT * FROM projects WHERE id=?",
+    "SELECT * FROM projects WHERE owner_id=?",
     [req.session.passport.user.id],
     function (err, items) {
       res.locals.projectsUser = items;
@@ -120,7 +120,6 @@ function fetchCommentsById(req, res, next) {
   );
 }
 
-//creo progetto
 router.post(
   "/createProject",
   upload.single("image"),
@@ -206,7 +205,9 @@ router.post("/createComment", function (req, res, next) {
 });
 
 //ottengo tutti i progetti
-router.get("/", fetchProjects, fetchProjectsByCategory);
+router.get("/", fetchProjects);
+
+router.get("/cerca", fetchProjects, fetchProjectsByCategory);
 
 router.get("/creatore", fetchProjects);
 
@@ -220,7 +221,7 @@ router.get(
   documentRoute.fetchFollowDocById
 );
 
-router.get("/profilo", fetchProjectsByUser);
+router.get("/profilo", fetchProjectsByUser, documentRoute.fetchDocumentsByUser);
 
 router.post(
   "/search",
@@ -246,7 +247,7 @@ router.post(
 router.post("/addFollow", function (req, res, next) {
   const id_project = req.body.projectId;
   db.run(
-    "INSERT INTO follow (user,id_prog) VALUES (?,?)",
+    "INSERT INTO follow (user,id_prog,tit_prog) VALUES (?,?,?)",
     [req.session.passport.user.id, id_project],
     function (err) {
       if (err) {

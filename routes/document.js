@@ -74,6 +74,17 @@ function fetchDocuments(req, res, next) {
   );
 }
 
+function fetchDocumentsByUser(req, res, next) {
+  db.all(
+    "SELECT * FROM documents WHERE user_id=?",
+    [req.session.passport.user.id],
+    function (err, items) {
+      res.locals.documentsByUser = items; //documents è il nome di una variabile che ho appena creato
+      next();
+    }
+  );
+}
+
 //prende i documenti di un determinato utente in base all'id
 function fetchFollowDocById(req, res, next) {
   const userId =
@@ -140,4 +151,5 @@ module.exports = {
   router: router,
   fetchDocuments: fetchDocuments,
   fetchFollowDocById: fetchFollowDocById,
+  fetchDocumentsByUser: fetchDocumentsByUser,
 };

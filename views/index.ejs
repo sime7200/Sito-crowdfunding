@@ -43,46 +43,6 @@
       </p>
     </div>
 
-    <div class="container mx-auto m-5">
-      <h2>Cerca Progetto</h2>
-
-      <div class="d-flex">
-        <input
-          id="categoriaSel"
-          class="form-control me-2 mr-2"
-          type="text"
-          list="cat_list"
-          name="categoriaSel"
-          placeholder="Selezionare categoria"
-          value="<%= categoriaSel %>"
-        />
-        <datalist id="cat_list">
-          <option>Tutti</option>
-          <option>Tecnologia</option>
-          <option>Cucina</option>
-          <option>Animali</option>
-          <option>Arredamento</option>
-          <option>Sport</option>
-          <option>Natura</option>
-          <option>Politica</option>
-        </datalist>
-        <input
-          id="searchValue"
-          class="form-control me-2 mr-2"
-          type="search"
-          name="searchValue"
-          placeholder="Cerca un progetto"
-          value="<%= searchValue %>"
-        />
-        <button class="btn btn-outline-success" onclick="searchProject()">
-          Cerca
-        </button>
-        <button class="btn btn-outline-primary" onclick="searchProject(true)">
-          Reset
-        </button>
-      </div>
-    </div>
-
     <section id="elenco-progetti">
       <div class="container">
         <div id="elenco-progetti" class="row">

@@ -36,10 +36,12 @@
 
     <!--tabella progetti propri-->
     <%if(user && user.role=="Creatore") {%>
+    <hr class="divider" />
+
     <div class="container mt-3">
       <div id="elenco-progetti" class="row">
         <div class="col-12 mx-auto">
-          <h1 class="text-center">I tuoi progetti</h1>
+          <h1 class="text-center">Progetti creati da te</h1>
           <table id="project-table" class="table">
             <thead class="thead-dark">
               <tr>
@@ -67,7 +69,17 @@
         </div>
       </div>
     </div>
-    <%}%> <%- include('partials/footer.ejs');%>
+    <% }; %> <%if(user && user.role=="Creatore") {%>
+    <hr class="divider" />
+
+    <h1 class="text-center">I tuoi documenti</h1>
+    <div class="container-doc text-center">
+      <p>
+        <% documentsByUser.forEach(element => { %>"<%= element.title %>" <% });
+        %>
+      </p>
+    </div>
+    <% }; %> <%- include('partials/footer.ejs');%>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"

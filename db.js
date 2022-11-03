@@ -52,7 +52,7 @@ db.serialize(function () {
   db.run(
     "CREATE TABLE IF NOT EXISTS follow ( \
     user INTEGER NOT NULL,  \
-    id_prog INTEGER NOT NULL\
+    id_prog INTEGER NOT NULL \
   )"
   );
 

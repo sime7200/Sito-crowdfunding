@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Project Details</title>
+    <%- include('partials/head.ejs');%>
+  </head>
+
+  <body>
+    <!--Inizio navbar-->
+    <%- include('partials/header');%>
+    <!--fine navbar-->
+
+    <div class="container mx-auto m-5">
+      <h2>Cerca Progetto</h2>
+
+      <div class="d-flex">
+        <input
+          id="categoriaSel"
+          class="form-control me-2 mr-2"
+          type="text"
+          list="cat_list"
+          name="categoriaSel"
+          placeholder="Selezionare categoria"
+          value="<%= categoriaSel %>"
+        />
+        <datalist id="cat_list">
+          <option>Tutti</option>
+          <option>Tecnologia</option>
+          <option>Cucina</option>
+          <option>Animali</option>
+          <option>Arredamento</option>
+          <option>Sport</option>
+          <option>Natura</option>
+          <option>Politica</option>
+        </datalist>
+        <input
+          id="searchValue"
+          class="form-control me-2 mr-2"
+          type="search"
+          name="searchValue"
+          placeholder="Cerca un progetto"
+          value="<%= searchValue %>"
+        />
+        <button class="btn btn-outline-success" onclick="searchProject()">
+          Cerca
+        </button>
+        <button class="btn btn-outline-primary" onclick="searchProject(true)">
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <section id="elenco-progetti">
+      <div class="container">
+        <div id="elenco-progetti" class="row">
+          <div class="col-12 mx-auto">
+            <h2>Lista progetti</h2>
+
+            <table id="project-table" class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Titolo</th>
+                  <th scope="col">Descrizione</th>
+                  <th scope="col">Categoria</th>
+                  <th scope="col">Autore</th>
+                  <th scope="col">Donazioni (€)</th>
+                </tr>
+              </thead>
+              <tbody id="table-project-body">
+                <% projects.forEach(element => { %>
+                <tr>
+                  <td><%=element.id%></td>
+                  <td><%=element.title%></td>
+                  <td><%=element.description%></td>
+                  <td><%=element.category%></td>
+                  <td><%=element.author_name%></td>
+                  <td><%=element.donations_total%></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+            <% if(user && user.role=='Creatore'){ %>
+            <button
+              class="btn btn-success mb-3"
+              data-toggle="modal"
+              data-target="#new-project"
+            >
+              Aggiungi progetto
+            </button>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer.ejs');%>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript" src="/javascript/index.js"></script>
+  </body>
+</html>

@@ -118,6 +118,10 @@ app.get("/profilo", function (req, res) {
   res.render("my", { user: req.user });
 });
 
+app.get("/cerca", function (req, res) {
+  res.render("cercaProg", { user: req.user });
+});
+
 app.use(passport.session());
 //logout
 app.get("/logout", function (req, res) {
