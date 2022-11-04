@@ -1,5 +1,5 @@
 Relazione sito Crowdfunding Garau Simone 20034352
-Il sito è composto da una Home page visualizzata appena lo si apre sulla porta 3003 (il file contenente la home si chiama index.ejs ed è nella cartella views). Nella home viene mostrata la lista dei progetti ma solo se si è loggati e come finanziatore si potrà aggiungere un nuovo progetto. Dal pulsante nella navbar LOGIN si accede alla pagina di login dove si può accedere con le giuste credenziali oppure registrarsi come nuovo utente tramite la comparsa di un modale. Gli utenti sono:
+Il sito è composto da una Home page visualizzata appena lo si apre sulla porta 3003 (il file contenente la home si chiama index.ejs ed è nella cartella views). Nella home viene mostrata la lista dei progetto. Solo se si è loggati come creatore si potrà aggiungere un nuovo progetto. Dal pulsante nella navbar LOGIN si accede alla pagina di login dove si può accedere con le giuste credenziali oppure registrarsi come nuovo utente tramite la comparsa di un modale. Gli utenti sono:
 Maria, 1234, Finanziatore;
 Luca, ciao, Creatore;
 Carla, 1111, Creatore;
@@ -8,7 +8,8 @@ Marco, 1234, Creatore;
 Simona, 2222, Finanziatore.
 Quando si esegue il login il pulsante nella navbar diventa un pulsante dropdown dove si può eseguire il LOGOUT oppure accedere alla pagina profilo con le informazioni dell’utente.
 I progetti della tabella nella home sono cliccabili e cliccandoci si può raggiungere la pagina dettaglio progetto (chiamata dettaglioProg.ejs sempre nella cartella views) con le informazioni del progetto e le possibili azioni in base al ruolo dell’utente loggato.
+Dalla navbar si può accedere alla pagina "Ricerca" nella quale è possibile ricercare una parola tra tutti i progetti (titolo e descrizione) oppure all'interno di una singola categoria. 
 Sono anche presenti una pagina Mission (mission.ejs)  e Contatti (contatti.ejs).
-Il database (realizzato con DB Browser SQLite) se lo si svuota si va a creare appena viene fatto partire il sito sulla porta 3003 tramite il file javascript db.js e le immagini caricate sono nella cartella images. 
+Per realizzare il database ho utilizzato DB Browser SQLite e le immagini caricate sono nella cartella images. 
 Simone Garau 20034352
 

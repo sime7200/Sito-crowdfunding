@@ -118,7 +118,7 @@ app.get("/profilo", function (req, res) {
   res.render("my", { user: req.user });
 });
 
-app.get("/cerca", function (req, res) {
+app.get("/ricerca", function (req, res) {
   res.render("cercaProg", { user: req.user });
 });
 

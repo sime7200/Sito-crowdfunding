@@ -203,7 +203,7 @@ router.post("/createComment", function (req, res, next) {
 //ottengo tutti i progetti
 router.get("/", fetchProjects);
 
-router.get("/cerca", fetchProjects, fetchProjectsByCategory);
+router.get("/ricerca", fetchProjects, fetchProjectsByCategory);
 
 router.get("/creatore", fetchProjects);
 
