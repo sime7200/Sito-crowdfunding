@@ -11,5 +11,6 @@ I progetti della tabella nella home sono cliccabili e cliccandoci si può raggiun
 Dalla navbar si può accedere alla pagina "Ricerca" nella quale è possibile ricercare una parola tra tutti i progetti (titolo e descrizione) oppure all'interno di una singola categoria. 
 Sono anche presenti una pagina Mission (mission.ejs)  e Contatti (contatti.ejs).
 Per realizzare il database ho utilizzato DB Browser SQLite e le immagini caricate sono nella cartella images. 
+Per far partire il progetto digitare: node server.
 Simone Garau 20034352
 

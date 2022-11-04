@@ -243,7 +243,7 @@ router.post(
 router.post("/addFollow", function (req, res, next) {
   const id_project = req.body.projectId;
   db.run(
-    "INSERT INTO follow (user,id_prog,tit_prog) VALUES (?,?,?)",
+    "INSERT INTO follow (user,id_prog) VALUES (?,?)",
     [req.session.passport.user.id, id_project],
     function (err) {
       if (err) {
